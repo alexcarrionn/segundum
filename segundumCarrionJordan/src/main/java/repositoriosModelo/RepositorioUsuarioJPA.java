@@ -9,5 +9,7 @@ public class RepositorioUsuarioJPA  extends RepositorioJPA<Usuario> implements I
 	public Class<Usuario> getClase() {
 		return Usuario.class;
 	}
+	
+	
 
 }
