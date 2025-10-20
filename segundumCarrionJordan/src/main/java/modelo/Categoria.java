@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import repositorio.Identificable;
+
 @Entity
-public class Categoria {
+public class Categoria implements Identificable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)

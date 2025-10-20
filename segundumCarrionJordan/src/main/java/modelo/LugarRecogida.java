@@ -2,12 +2,9 @@ package modelo;
 
 import javax.persistence.*;
 
-@Entity
+@Embeddable
 public class LugarRecogida {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
-	private String id;
 	
 	@Lob
 	private String descripcion;
@@ -25,13 +22,6 @@ public class LugarRecogida {
 		this.latitud = latitud;
 	}
 	
-	public String getId() {
-		return id;
-	}
-	
-	public void setId(String id) {
-		this.id = id;
-	}
 	
 	public String getDescripcion() {
 		return descripcion;

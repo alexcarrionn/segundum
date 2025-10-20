@@ -1,12 +1,12 @@
 package modelo;
 
 import java.time.LocalDateTime;
-
+import repositorio.Identificable;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "productos")
-public class Producto {
+public class Producto implements Identificable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
@@ -30,8 +30,7 @@ public class Producto {
 	private int visualizaciones;
 	private boolean envioDisponible;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "lugar_recogida_id")
+	@Embedded
 	private LugarRecogida lugarRecogida;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

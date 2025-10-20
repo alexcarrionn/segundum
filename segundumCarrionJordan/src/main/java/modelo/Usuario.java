@@ -1,11 +1,11 @@
 package modelo;
 
 import java.time.LocalDate;
-
+import repositorio.Identificable;
 import javax.persistence.*;
 
 @Entity
-public class Usuario {
+public class Usuario implements Identificable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
