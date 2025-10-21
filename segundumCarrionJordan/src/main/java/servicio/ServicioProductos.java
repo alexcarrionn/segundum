@@ -21,8 +21,7 @@ public class ServicioProductos implements IServiciosProductos {
 	private IRepositorioProducto repositorioProducto;
 	private IRepositorioUsuario repositorioUsuario;
 	private IRepositorioCategorias repositorioCategoria;
-	// Podrías necesitar inyectar el Repositorio AdHoc también si no lo obtienes de la factoría
-	// private RepositorioProductoAdHoc repositorioProductoAdHoc;
+
 
 	// Constructor para inyección de dependencias
 	public ServicioProductos(IRepositorioProducto repositorioProducto,
@@ -31,8 +30,7 @@ public class ServicioProductos implements IServiciosProductos {
 		this.repositorioProducto = repositorioProducto;
 		this.repositorioUsuario = repositorioUsuario;
 		this.repositorioCategoria = repositorioCategoria;
-		// Si inyectas el AdHoc:
-		// this.repositorioProductoAdHoc = FactoriaRepositorios.getRepositorio(Producto.class, RepositorioProductoAdHoc.class);
+		
 	}
 
 	@Override
@@ -77,32 +75,86 @@ public class ServicioProductos implements IServiciosProductos {
 
 	@Override
 	public void asignarLugarRecogida(String idProducto, String descripcionLugar, double longitud, double latitud)
-	                    throws EntidadNoEncontrada, RepositorioException {
-		// TODO: Implementar lógica Historia 5
-		// Buscar Producto, crear LugarRecogida, setearlo y hacer update.
-		throw new UnsupportedOperationException("Método asignarLugarRecogida no implementado todavía");
+						throws EntidadNoEncontrada, RepositorioException {
+
+		Producto producto = repositorioProducto.getById(idProducto);
+
+		if (producto == null) {
+			throw new EntidadNoEncontrada("No se encontró el producto con ID: " + idProducto);
+		}
+		
+		if (descripcionLugar == null || descripcionLugar.trim().isEmpty()) {
+		    throw new IllegalArgumentException("La descripción del lugar de recogida no puede estar vacía.");
+		}
+		LugarRecogida nuevoLugar = new LugarRecogida(descripcionLugar, longitud, latitud);
+
+		producto.setLugarRecogida(nuevoLugar);
+
+		try {
+			repositorioProducto.update(producto);
+		} catch (RepositorioException e) {
+			throw new RepositorioException("Error al actualizar el lugar de recogida para el producto ID: " + idProducto, e);
+		}
 	}
 
 	@Override
 	public void modificarProducto(String idProducto, Double nuevoPrecio, String nuevaDescripcion)
-	                    throws EntidadNoEncontrada, IllegalArgumentException, RepositorioException {
-		// TODO: Implementar lógica Historia 4
-		// Buscar Producto, validar precio si viene, setear campos no nulos y hacer update.
-		throw new UnsupportedOperationException("Método modificarProducto no implementado todavía");
-	}
+						throws EntidadNoEncontrada, IllegalArgumentException, RepositorioException {
 
+		Producto producto = repositorioProducto.getById(idProducto);
+		if (producto == null) {
+			throw new EntidadNoEncontrada("No se encontró el producto con ID: " + idProducto);
+		}
+
+		boolean modificado = false; 
+
+		if (nuevoPrecio != null) {
+			if (nuevoPrecio < 0) {
+				throw new IllegalArgumentException("El precio no puede ser negativo.");
+			}
+			producto.setPrecio(nuevoPrecio);
+			modificado = true;
+		}
+
+		if (nuevaDescripcion != null) {
+			producto.setDescripcion(nuevaDescripcion);
+			modificado = true;
+		}
+
+		if (modificado) {
+			try {
+				repositorioProducto.update(producto);
+			} catch (RepositorioException e) {
+				throw new RepositorioException("Error al modificar el producto ID: " + idProducto, e);
+			}
+		} else {
+			System.out.println("No se especificaron cambios para el producto ID: " + idProducto);
+		}
+	}
+	
+	//MÉTODO IMPLÍCITO PARA LA HISTORIA 6 Y 7
 	@Override
 	public void anadirVisualizacion(String idProducto)
-	                    throws EntidadNoEncontrada, RepositorioException {
-		// TODO: Implementar lógica
-		// Buscar Producto, incrementar visualizaciones y hacer update.
-		throw new UnsupportedOperationException("Método anadirVisualizacion no implementado todavía");
+						throws EntidadNoEncontrada, RepositorioException {
+
+		Producto producto = repositorioProducto.getById(idProducto);
+		if (producto == null) {
+			throw new EntidadNoEncontrada("No se encontró el producto con ID: " + idProducto + " para añadir visualización.");
+		}
+
+		int visualizacionesActuales = producto.getVisualizaciones();
+		producto.setVisualizaciones(visualizacionesActuales + 1);
+
+		try {
+			repositorioProducto.update(producto);
+		} catch (RepositorioException e) {
+			throw new RepositorioException("Error al añadir visualización al producto ID: " + idProducto, e);
+		}
 	}
 
 	@Override
 	public List<Producto> historialDelMes(int mes, int ano) throws RepositorioException {
 		// TODO: Implementar lógica Historia 6
-		// Necesitará una consulta específica (posiblemente AdHoc o Criteria API).
 		throw new UnsupportedOperationException("Método historialDelMes no implementado todavía");
 	}
 
@@ -110,15 +162,11 @@ public class ServicioProductos implements IServiciosProductos {
 	public List<Producto> buscarProductos(String idCategoria, String textoDescripcion, EstadoProducto estadoMinimo, Double precioMax)
 	                    throws RepositorioException {
 		// TODO: Implementar lógica Historia 7
-		// Obtener RepositorioProductoAdHoc (vía factoría o inyección)
-		// Si idCategoria != null, obtener descendientes (posiblemente vía IServiciosCategorias)
-		// Llamar a repositorioProductoAdHoc.findProductosByCriteria(...)
+		
 		System.out.println("TODO: Implementar búsqueda de productos..."); // Mensaje temporal
-		// Devolver resultado temporal para que compile:
 		RepositorioProductoAdHoc repoAdHoc = FactoriaRepositorios.getRepositorio(Producto.class, RepositorioProductoAdHoc.class);
 		if (repoAdHoc != null) {
-		    // Llamada de ejemplo (aún no implementada en el repo adhoc)
-		    return repoAdHoc.findProductosByCriteria(idCategoria, textoDescripcion, estadoMinimo, precioMax);
+ 		    return repoAdHoc.findProductosByCriteria(idCategoria, textoDescripcion, estadoMinimo, precioMax);
 		} else {
 		    System.err.println("Error: No se pudo obtener RepositorioProductoAdHoc desde FactoriaRepositorios.");
 		    return new ArrayList<>(); // Devolver lista vacía en caso de error al obtener el repo
