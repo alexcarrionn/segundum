@@ -1,11 +1,10 @@
-package repositoriosModelo;
-
+package repositoriosModelo; 
 
 import modelo.Usuario;
-import repositorio.RepositorioString;
+import repositorio.Repositorio; 
 
-public interface IRepositorioUsuario extends RepositorioString<Usuario> {
-	//Definimos los métodos específicos para Usuario si es necesario
+public interface IRepositorioUsuario extends Repositorio<Usuario, String> {
+
+    
 
 }
-

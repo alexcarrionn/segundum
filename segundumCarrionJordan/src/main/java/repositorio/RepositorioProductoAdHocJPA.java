@@ -1,19 +1,31 @@
 package repositorio;
 
-import repositoriosModelo.RepositorioProductosJPA;
 
-/**
- * Implementacion JPA del repositorio ad-hoc de Producto
- * Esta clase nos va a permitir implementar metodos de busqueda que no se puedan implemmentar en el repositorio generico
- */
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import modelo.EstadoProducto;
+import modelo.Producto;
+import repositoriosModelo.RepositorioProductosJPA;
+import utils.EntityManagerHelper;
+
 
 public class RepositorioProductoAdHocJPA extends RepositorioProductosJPA implements RepositorioProductoAdHoc {
+
 	
-	//Aqui implementamos los metodos ad-hoc especificos para Producto
-	//Por ejemplo, buscar productos por categoria, precio, etc.
-	/*Public List<Producto> buscarPorCategoria(String categoria){
-	 * // Implementacion del metodo
-	 * 
-	 */
+	@Override
+	public List<Producto> findProductosByCriteria(String idCategoriaRaiz, String textoDescripcion,
+	                                            EstadoProducto estadoMinimo, Double precioMax) {
+
+		// **TODO:** Implementar la lógica de búsqueda real aquí usando JPA.
+
+		EntityManager em = EntityManagerHelper.getEntityManager();
+
+		System.out.println("TODO: Implementar búsqueda de productos por criterios...");
+		return new ArrayList<>(); 
+
+	}
+
+	
 
 }
