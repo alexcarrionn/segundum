@@ -6,7 +6,7 @@ package repositorio;
  */
 
 @SuppressWarnings("serial")
-public class RepositorioException extends RuntimeException { //Con RuntimeException, no es necesario declarar throws todo el rato.
+public class RepositorioException extends Exception {
 
 	public RepositorioException(String msg, Throwable causa) {		
 		super(msg, causa);
@@ -15,6 +15,6 @@ public class RepositorioException extends RuntimeException { //Con RuntimeExcept
 	public RepositorioException(String msg) {
 		super(msg);		
 	}
-	
-		
+
 }
+		

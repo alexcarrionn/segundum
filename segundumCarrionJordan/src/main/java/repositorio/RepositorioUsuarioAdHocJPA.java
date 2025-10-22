@@ -1,7 +1,5 @@
 package repositorio;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import org.eclipse.persistence.config.HintValues;
@@ -15,7 +13,9 @@ import utils.EntityManagerHelper;
 public class RepositorioUsuarioAdHocJPA extends RepositorioUsuarioJPA implements RepositorioUsuarioAdHoc {
 
 
-	
+	/**
+	 * Esta función nos permite buscar un usuario por su email.
+	 */
 	@Override
 	public Usuario buscarPorEmail(String Email) throws RepositorioException {
 		try {

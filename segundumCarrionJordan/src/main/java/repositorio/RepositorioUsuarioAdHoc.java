@@ -1,7 +1,5 @@
 package repositorio;
 
-import java.util.List;
-
 import modelo.Usuario;
 
 public interface RepositorioUsuarioAdHoc extends RepositorioString<Usuario>{

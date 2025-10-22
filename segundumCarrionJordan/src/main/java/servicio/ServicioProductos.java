@@ -164,7 +164,8 @@ public class ServicioProductos implements IServiciosProductos {
 		// TODO: Implementar lógica Historia 7
 		
 		System.out.println("TODO: Implementar búsqueda de productos..."); // Mensaje temporal
-		RepositorioProductoAdHoc repoAdHoc = FactoriaRepositorios.getRepositorio(Producto.class, RepositorioProductoAdHoc.class);
+
+		RepositorioProductoAdHoc repoAdHoc = FactoriaRepositorios.getRepositorio(getClass());
 		if (repoAdHoc != null) {
  		    return repoAdHoc.findProductosByCriteria(idCategoria, textoDescripcion, estadoMinimo, precioMax);
 		} else {
