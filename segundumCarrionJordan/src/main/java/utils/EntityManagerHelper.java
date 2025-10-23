@@ -8,7 +8,7 @@ public class EntityManagerHelper {
     private static final ThreadLocal<EntityManager> entityManagerHolder;
 
     static {    
-        entityManagerFactory = Persistence.createEntityManagerFactory("encuestas");
+        entityManagerFactory = Persistence.createEntityManagerFactory("segundum");
         entityManagerHolder = new ThreadLocal<EntityManager>();
     }
 

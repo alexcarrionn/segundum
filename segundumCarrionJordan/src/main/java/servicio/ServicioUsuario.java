@@ -13,7 +13,7 @@ import repositorio.RepositorioUsuarioAdHoc;
 public class ServicioUsuario implements IServicioUsuario {
 	
 	//Definimos el repositorio de usuarios
-	private RepositorioUsuarioAdHoc repositorioAdHoc = FactoriaRepositorios.getRepositorio(Usuario.class);
+	private RepositorioUsuarioAdHoc repositorioAdHoc = FactoriaRepositorios.getRepositorio(RepositorioUsuarioAdHoc.class);
 	private Repositorio<Usuario, String> repositorio = FactoriaRepositorios.getRepositorio(Usuario.class);
 	/**s
 	 * Funcionalidad: Registrar un nuevo usuario (donde telefono es opcional)
@@ -94,6 +94,14 @@ public class ServicioUsuario implements IServicioUsuario {
 		
 		if (usuarioExistente == null) {
 			throw new EntidadNoEncontrada("No se encontró el usuario con ID: " + idUsuario);
+		}
+		
+		//ahora comprobamos si el email que quiere poner ya lo tiene otro usuario
+		if( !usuarioExistente.getEmail().equals(email)) {
+			Usuario usuarioConEmail = repositorioAdHoc.buscarPorEmail(email);
+			if (usuarioConEmail != null) {
+				throw new RepositorioException("Ya existe un usuario registrado con ese email");
+			}
 		}
 		
 		//Actualizamos los datos del usuario

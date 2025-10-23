@@ -24,9 +24,12 @@ public class RepositorioUsuarioAdHocJPA extends RepositorioUsuarioJPA implements
 			
 			TypedQuery<Usuario> query = em.createQuery(queryString, Usuario.class);
 			query.setHint(QueryHints.REFRESH, HintValues.TRUE);
-			
+			query.setParameter("emailParam", Email);
 			return query.getSingleResult();
-			
+		} catch (javax.persistence.NoResultException e) {
+	        // Si no lo encuentra, devuelve null en lugar de lanzar una excepción
+	        return null;
+	    
 		} catch (Exception e) {
 			throw new RepositorioException("Error al buscar usuarios por email: " + e.getMessage(), e);
 		} finally {
