@@ -1,20 +1,18 @@
 package repositorio;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException; 
 import javax.persistence.TypedQuery;
 
 import modelo.Categoria;
 import modelo.EstadoProducto;
 import modelo.Producto;
-import repositorio.FactoriaRepositorios;
-import repositorio.RepositorioException;
 import repositoriosModelo.IRepositorioCategorias;
 import repositoriosModelo.RepositorioProductosJPA;
 import utils.EntityManagerHelper;
@@ -133,7 +131,7 @@ public class RepositorioProductoAdHocJPA extends RepositorioProductosJPA impleme
 	 * Devuelve una lista de Estados de Producto iguales o mejores que el estado dado.
 	 */
 	private List<EstadoProducto> obtenerEstadosIgualesOMejores(EstadoProducto estadoMinimo) {
-		return List.of(EstadoProducto.values()).stream()
+		return Arrays.stream(EstadoProducto.values())
 		                .filter(e -> e.ordinal() <= estadoMinimo.ordinal())
 		                .collect(Collectors.toList());
 	}

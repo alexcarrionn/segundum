@@ -5,6 +5,5 @@ import repositorio.Repositorio;
 
 public interface IRepositorioUsuario extends Repositorio<Usuario, String> {
 
-    
 
 }

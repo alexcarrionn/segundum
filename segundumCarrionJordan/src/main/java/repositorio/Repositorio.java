@@ -2,6 +2,7 @@ package repositorio;
 
 import java.util.List;
 
+
 /*
  *  Repositorio para entidades gestionadas con identificador.
  *  El parámetro T representa el tipo de datos de la entidad.
@@ -21,4 +22,5 @@ public interface Repositorio <T, K> {
 	List<T> getAll() throws RepositorioException;
 
 	List<K> getIds()throws RepositorioException;
+	
 }
