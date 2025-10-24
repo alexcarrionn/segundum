@@ -126,7 +126,10 @@ public class ServicioUsuario implements IServicioUsuario {
 	
 	//Metodo para un administrador, para poder modificar una categoria existente
 	@Override
-	public void modificarCategoria (Usuario usuario, String idCategoria, String descripcion) throws RepositorioException, EntidadNoEncontrada {
+	public void modificarCategoria (String idUsuario, String idCategoria, String descripcion) throws RepositorioException, EntidadNoEncontrada {
+		
+		//Obetenemos el usuario de la base de datos
+		Usuario usuario = repositorio.getById(idUsuario);	
 		
 		//primero comprobamos que somos administradores 
 		if (usuario.isAdmin()) {
@@ -135,6 +138,22 @@ public class ServicioUsuario implements IServicioUsuario {
 			throw new RepositorioException("No tienes permisos para modificar categorias");
 		}
 	
+	}
+
+
+	@Override
+	public void asignarRolAdmin(String idUsuario2) throws RepositorioException, EntidadNoEncontrada {
+		
+		//Obetenemos el usuario de la base de datos
+		Usuario usuario = repositorio.getById(idUsuario2);
+		
+		//le cambiamos el rol a admin 
+		usuario.setAdmin(true);
+		
+		//Guardamos los cambios en el repositorio
+		repositorio.update(usuario);
+		
+		
 	}
 
 	

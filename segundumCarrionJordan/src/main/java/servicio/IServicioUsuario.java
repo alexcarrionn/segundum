@@ -2,7 +2,6 @@ package servicio;
 
 import java.time.LocalDate;
 
-import modelo.Usuario;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
 
@@ -15,7 +14,11 @@ public interface IServicioUsuario {
 	void actualizarDatosUsuario(String idUsuario, String nombre, String apellidos, String email, String clave, LocalDate fechaNacimiento, String telefono) throws RepositorioException, EntidadNoEncontrada;
 	
 	//Funcionalidad: Permitir a un usuario con privilegios de administrador modificar la descripcion de una categoria existente
-	void modificarCategoria(Usuario usuario, String idCategoria, String descripcion)
+	void modificarCategoria(String idUsuario, String idCategoria, String descripcion)
 			throws RepositorioException, EntidadNoEncontrada;
+
+	void asignarRolAdmin(String idUsuario2) throws RepositorioException, EntidadNoEncontrada;
+
+
 	
 }

@@ -14,7 +14,7 @@ import repositorio.RepositorioException;
 public class ServicioCategorias implements IServiciosCategorias {
 
 	//Definimos el repositorio de categorias ue vamos a usar 
-	private Repositorio<modelo.Categoria, String> repositorioCategoria = FactoriaRepositorios.getRepositorio(Categoria.class);
+	private Repositorio<Categoria, String> repositorioCategoria = FactoriaRepositorios.getRepositorio(Categoria.class);
 	
 	@Override
 	public void modificarCategoria(String idCategoria, String descripcion) throws RepositorioException, EntidadNoEncontrada {
