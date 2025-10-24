@@ -4,27 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import repositorio.Identificable;
 
-@XmlRootElement
+
 @Entity
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Categoria implements Identificable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
+	@XmlAttribute
 	private String id;
 	
+	//Utilizamos XmlElement para definir el nombre de los elementos hijos en el XML
+	@XmlElement
 	private String nombre;
 	
 	@Lob
 	private String descripcion;
-	
+	@XmlAttribute
 	private String ruta; 
 	
-    
+	
+	//Utilizamos XmlElement para definir el nombre de los elementos hijos en el XML
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @XmlElement(name="categoria")
     private List<Categoria> subcategorias = new ArrayList<>();
     
     
@@ -48,7 +59,8 @@ public class Categoria implements Identificable{
 	public String getNombre() {
 		return nombre;
 	}
-
+	
+	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
