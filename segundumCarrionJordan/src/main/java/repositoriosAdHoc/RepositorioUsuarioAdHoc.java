@@ -1,6 +1,8 @@
-package repositorio;
+package repositoriosAdHoc;
 
 import modelo.Usuario;
+import repositorio.RepositorioException;
+import repositorio.RepositorioString;
 
 public interface RepositorioUsuarioAdHoc extends RepositorioString<Usuario>{
 	

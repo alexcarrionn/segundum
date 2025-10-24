@@ -11,7 +11,8 @@ import repositoriosModelo.IRepositorioCategorias;
 import repositorio.EntidadNoEncontrada;
 import repositorio.FactoriaRepositorios; // Necesario si obtienes RepositorioAdHoc desde aquí
 import repositorio.RepositorioException;
-import repositorio.RepositorioProductoAdHoc; // Interfaz AdHoc
+import repositoriosAdHoc.RepositorioProductoAdHoc;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList; // Para el return temporal en buscarProductos

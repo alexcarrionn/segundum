@@ -1,4 +1,4 @@
-package repositorio;
+package repositoriosAdHoc;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -6,6 +6,7 @@ import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 
 import modelo.Usuario;
+import repositorio.RepositorioException;
 import repositoriosModelo.RepositorioUsuarioJPA;
 import utils.EntityManagerHelper;
 

@@ -1,4 +1,4 @@
-package repositorio; // O el paquete que decidáis para las interfaces AdHoc
+package repositoriosAdHoc; // O el paquete que decidáis para las interfaces AdHoc
 
 import java.util.List;
 import modelo.EstadoProducto;

@@ -7,7 +7,7 @@ import repositorio.EntidadNoEncontrada;
 import repositorio.FactoriaRepositorios;
 import repositorio.Repositorio;
 import repositorio.RepositorioException;
-import repositorio.RepositorioUsuarioAdHoc;
+import repositoriosAdHoc.RepositorioUsuarioAdHoc;
 
 
 public class ServicioUsuario implements IServicioUsuario {
@@ -15,6 +15,12 @@ public class ServicioUsuario implements IServicioUsuario {
 	//Definimos el repositorio de usuarios
 	private RepositorioUsuarioAdHoc repositorioAdHoc = FactoriaRepositorios.getRepositorio(RepositorioUsuarioAdHoc.class);
 	private Repositorio<Usuario, String> repositorio = FactoriaRepositorios.getRepositorio(Usuario.class);
+	
+	//definimos el servicio de categorias para usar
+	private IServiciosCategorias servicioCategorias = new ServicioCategorias();
+	
+	
+	
 	/**s
 	 * Funcionalidad: Registrar un nuevo usuario (donde telefono es opcional)
 	 * Con la informacion del usuario, se crea un usuario nuevo y se almacena en el repositorio. La aplicacion genera el id y lo retorna. Al ser un registro
@@ -114,6 +120,21 @@ public class ServicioUsuario implements IServicioUsuario {
 		
 		//Guardamos los cambios en el repositorio
 		repositorio.update(usuarioExistente);	
+	}
+	
+	
+	
+	//Metodo para un administrador, para poder modificar una categoria existente
+	@Override
+	public void modificarCategoria (Usuario usuario, String idCategoria, String descripcion) throws RepositorioException, EntidadNoEncontrada {
+		
+		//primero comprobamos que somos administradores 
+		if (usuario.isAdmin()) {
+			servicioCategorias.modificarCategoria(idCategoria, descripcion);
+		} else {
+			throw new RepositorioException("No tienes permisos para modificar categorias");
+		}
+	
 	}
 
 	

@@ -91,11 +91,11 @@ public class Usuario implements Identificable {
 		this.telefono = telefono;
 	}
 
-	public boolean isEsAdmin() {
+	public boolean isAdmin() {
 		return esAdmin;
 	}
 
-	public void setEsAdmin(boolean esAdmin) {
+	public void setAdmin(boolean esAdmin) {
 		this.esAdmin = esAdmin;
 	}
 	

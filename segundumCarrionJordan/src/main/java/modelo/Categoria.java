@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import repositorio.Identificable;
 
+@XmlRootElement
 @Entity
 public class Categoria implements Identificable{
 	

@@ -1,4 +1,4 @@
-package repositorio;
+package repositoriosAdHoc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +13,9 @@ import javax.persistence.TypedQuery;
 import modelo.Categoria;
 import modelo.EstadoProducto;
 import modelo.Producto;
+import repositorio.EntidadNoEncontrada;
+import repositorio.FactoriaRepositorios;
+import repositorio.RepositorioException;
 import repositoriosModelo.IRepositorioCategorias;
 import repositoriosModelo.RepositorioProductosJPA;
 import utils.EntityManagerHelper;
