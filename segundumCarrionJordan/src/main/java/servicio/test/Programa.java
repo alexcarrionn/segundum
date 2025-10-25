@@ -2,6 +2,7 @@ package servicio.test;
 
 import java.time.LocalDate;
 
+import modelo.Categoria;
 import repositorio.FactoriaRepositorios;
 import repositoriosAdHoc.*;
 import servicio.FactoriaServicios;
@@ -78,17 +79,19 @@ public class Programa {
 				
 				//Ahora probamos el conseguir las categorias raiz 
 				
-				RepositorioCategoriasAdHoc repositorioCategorias = FactoriaRepositorios.getRepositorio(RepositorioCategoriasAdHoc.class);
+				RepositorioCategoriasAdHoc repositorioAdHoc = FactoriaRepositorios.getRepositorio(RepositorioCategoriasAdHoc.class);
 				
-				repositorioCategorias.buscarCategoriasRaiz().forEach(categoria -> {
-					System.out.println("Categoria raiz: " + categoria.getId() + " - " + categoria.getDescripcion());
+				repositorioAdHoc.buscarCategoriasRaiz().forEach(categoria -> {
+					System.out.println("Categoria raiz: " + categoria.getId() + " - " + categoria.getNombre());
 				});
 				
 				//Probamos a buscar subcategorias de una categoria
 				String idCategoriaPadre = "5709";
+				//buscamos la categoria padre
+				Categoria categoriaPadre = repositorioAdHoc.getById(idCategoriaPadre); 
 				
-				repositorioCategorias.buscarDescendientes(idCategoriaPadre).forEach(categoria -> {
-					System.out.println("Subcategoria de " + idCategoriaPadre + ": " + categoria.getId() + " - " + categoria.getDescripcion());
+				repositorioAdHoc.buscarDescendientes(idCategoriaPadre).forEach(categoria -> {
+					System.out.println("Subcategoria de " + idCategoriaPadre + " - " + categoriaPadre.getNombre() + ": " + categoria.getId() + " - " + categoria.getNombre());
 				});
 				
 	

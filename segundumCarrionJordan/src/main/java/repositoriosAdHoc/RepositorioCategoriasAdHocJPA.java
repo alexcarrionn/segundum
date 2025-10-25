@@ -11,9 +11,10 @@ import org.eclipse.persistence.config.QueryHints;
 import modelo.Categoria;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
+import repositoriosModelo.RepositorioCategoriaJPA;
 import utils.EntityManagerHelper;
 
-public class RepositorioCategoriasAdHocJPA implements RepositorioCategoriasAdHoc {
+public class RepositorioCategoriasAdHocJPA  extends RepositorioCategoriaJPA implements RepositorioCategoriasAdHoc{
 
 	@Override
 	public List<Categoria> buscarCategoriasRaiz() throws RepositorioException, EntidadNoEncontrada{
@@ -58,6 +59,8 @@ public class RepositorioCategoriasAdHocJPA implements RepositorioCategoriasAdHoc
 			EntityManagerHelper.closeEntityManager();
 		}
 	}
+
+
 	
 	
 
