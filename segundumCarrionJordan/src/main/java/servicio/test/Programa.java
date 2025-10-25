@@ -81,7 +81,7 @@ public class Programa {
 				
 				RepositorioCategoriasAdHoc repositorioAdHoc = FactoriaRepositorios.getRepositorio(RepositorioCategoriasAdHoc.class);
 				
-				repositorioAdHoc.buscarCategoriasRaiz().forEach(categoria -> {
+				servicioCategorias.obtenerCategoriasRaiz().forEach(categoria -> {
 					System.out.println("Categoria raiz: " + categoria.getId() + " - " + categoria.getNombre());
 				});
 				
@@ -90,7 +90,7 @@ public class Programa {
 				//buscamos la categoria padre
 				Categoria categoriaPadre = repositorioAdHoc.getById(idCategoriaPadre); 
 				
-				repositorioAdHoc.buscarDescendientes(idCategoriaPadre).forEach(categoria -> {
+				servicioCategorias.obtenerDescendientes(idCategoriaPadre).forEach(categoria -> {
 					System.out.println("Subcategoria de " + idCategoriaPadre + " - " + categoriaPadre.getNombre() + ": " + categoria.getId() + " - " + categoria.getNombre());
 				});
 				

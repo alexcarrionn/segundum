@@ -1,6 +1,7 @@
 package servicio;
 
 import java.io.File;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -10,6 +11,7 @@ import repositorio.EntidadNoEncontrada;
 import repositorio.FactoriaRepositorios;
 import repositorio.Repositorio;
 import repositorio.RepositorioException;
+import repositoriosAdHoc.RepositorioCategoriasAdHoc;
 
 public class ServicioCategorias implements IServiciosCategorias {
 
@@ -51,12 +53,19 @@ public class ServicioCategorias implements IServiciosCategorias {
 				System.out.println("Categoria con id: " + categoria.getId() + " añadida correctamente.");
 			}
 			
-			
-			
-			
-			
+	}
+	
+	@Override
+	public List<Categoria> obtenerCategoriasRaiz() throws RepositorioException, EntidadNoEncontrada {
+		RepositorioCategoriasAdHoc repositorioAdHoc = FactoriaRepositorios.getRepositorio(RepositorioCategoriasAdHoc.class);
+		return repositorioAdHoc.buscarCategoriasRaiz();
 	}
 	
 	
+	@Override
+	public List<Categoria> obtenerDescendientes(String idCategoriaPadre) throws RepositorioException, EntidadNoEncontrada {
+		RepositorioCategoriasAdHoc repositorioAdHoc = FactoriaRepositorios.getRepositorio(RepositorioCategoriasAdHoc.class);
+		return repositorioAdHoc.buscarDescendientes(idCategoriaPadre);
+	}
 	
 }
