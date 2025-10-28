@@ -1,6 +1,7 @@
 package servicio;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -66,6 +67,58 @@ public class ServicioCategorias implements IServiciosCategorias {
 	public List<Categoria> obtenerDescendientes(String idCategoriaPadre) throws RepositorioException, EntidadNoEncontrada {
 		RepositorioCategoriasAdHoc repositorioAdHoc = FactoriaRepositorios.getRepositorio(RepositorioCategoriasAdHoc.class);
 		return repositorioAdHoc.buscarDescendientes(idCategoriaPadre);
+	}
+	
+	//A PARTIR DE AQUI HECHO POR BORJA, LO NECESITO PARA LA HISTORIA 7
+	@Override
+	public List<Categoria> recuperarTodosDescendientes(String idCategoriaPadre) throws RepositorioException, EntidadNoEncontrada {
+	    // Verificar que el padre existe
+	    repositorioCategoria.getById(idCategoriaPadre); // Lanza si no existe
+
+	    List<Categoria> todosLosDescendientes = new ArrayList<>();
+	    RepositorioCategoriasAdHoc repoAdHoc = getRepositorioCategoriasAdHoc(); // Obtener AdHoc una vez
+
+	    // Llamar al auxiliar recursivo
+	    buscarDescendientesRecursivo(idCategoriaPadre, todosLosDescendientes, repoAdHoc);
+	    return todosLosDescendientes;
+	}
+
+	// ---> NUEVO MÉTODO AUXILIAR RECURSIVO <---
+	/**
+	 * Busca recursivamente los descendientes y los añade a la lista acumulada.
+	 */
+	private void buscarDescendientesRecursivo(String idPadreActual, List<Categoria> acumulados, RepositorioCategoriasAdHoc repoAdHoc)
+	        throws RepositorioException, EntidadNoEncontrada { // Declara excepciones checked
+
+	    // Busca los hijos directos del nodo actual usando el repo AdHoc
+	    List<Categoria> hijosDirectos = repoAdHoc.buscarDescendientes(idPadreActual); // Lanza checked
+
+	    if (hijosDirectos != null && !hijosDirectos.isEmpty()) {
+	        // Añade los hijos encontrados a la lista general
+	        acumulados.addAll(hijosDirectos);
+	        // Para cada hijo, busca sus propios descendientes
+	        for (Categoria hijo : hijosDirectos) {
+	            // Pasa el repo AdHoc para evitar obtenerlo múltiples veces
+	            buscarDescendientesRecursivo(hijo.getId(), acumulados, repoAdHoc);
+	        }
+	    }
+	}
+
+    // ---> NUEVO MÉTODO AUXILIAR PARA OBTENER ADHOC <---
+	/**
+	 * Obtiene el RepositorioCategoriasAdHoc mediante cast.
+     * Maneja RuntimeException de la factoría.
+	 */
+	private RepositorioCategoriasAdHoc getRepositorioCategoriasAdHoc() throws RepositorioException {
+	    try {
+    		if (this.repositorioCategoria instanceof RepositorioCategoriasAdHoc) {
+    			return (RepositorioCategoriasAdHoc) this.repositorioCategoria;
+    		} else {
+    			throw new RepositorioException("La implementación del repositorio de Categoría no soporta operaciones AdHoc.");
+    		}
+        } catch (RuntimeException e) { // Captura error de Factoría al obtener repositorioCategoria
+            throw new RepositorioException("Error al obtener repositorio AdHoc de Categoría", e); // Envuelve en checked
+        }
 	}
 	
 }

@@ -35,6 +35,6 @@ public interface IServiciosProductos {
 
 	// Busca productos a la venta según criterios opcionales. (Historia 7)
 	List<Producto> buscarProductos(String idCategoria, String textoDescripcion, EstadoProducto estadoMinimo, Double precioMax)
-	                    throws RepositorioException;
+	                    throws RepositorioException, EntidadNoEncontrada;
 
 }

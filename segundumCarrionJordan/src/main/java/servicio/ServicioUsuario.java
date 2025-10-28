@@ -21,7 +21,7 @@ public class ServicioUsuario implements IServicioUsuario {
 	
 	
 	
-	/**s
+	/**
 	 * Funcionalidad: Registrar un nuevo usuario (donde telefono es opcional)
 	 * Con la informacion del usuario, se crea un usuario nuevo y se almacena en el repositorio. La aplicacion genera el id y lo retorna. Al ser un registro
 	 * el usuario no es admininistrador.

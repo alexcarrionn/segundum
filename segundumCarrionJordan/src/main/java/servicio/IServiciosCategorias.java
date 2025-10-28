@@ -17,4 +17,8 @@ public interface IServiciosCategorias {
 
 	List<Categoria> obtenerDescendientes(String idCategoriaPadre) throws RepositorioException, EntidadNoEncontrada;
 	
+	//Hecho por Borja, lo necesito para la historia 7
+	List<Categoria> recuperarTodosDescendientes(String idCategoriaPadre) throws RepositorioException, EntidadNoEncontrada;
+
+	
 }

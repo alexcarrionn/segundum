@@ -14,7 +14,7 @@ public interface RepositorioProductoAdHoc {
 	/**
 	 * Busca productos según criterios opcionales (Historia 7).
 	 */
-	List<Producto> findProductosByCriteria(String idCategoriaRaiz, String textoDescripcion,
+	List<Producto> findProductosByCriteria(List<String> idsCategorias, String textoDescripcion,
 	                                     EstadoProducto estadoMinimo, Double precioMax)
 	                                     throws RepositorioException;
 	/**

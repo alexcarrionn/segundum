@@ -8,30 +8,24 @@ import modelo.LugarRecogida;
 import repositoriosModelo.IRepositorioProducto;
 import repositoriosModelo.IRepositorioUsuario;
 import repositoriosModelo.IRepositorioCategorias;
-import repositorio.EntidadNoEncontrada;
-import repositorio.FactoriaRepositorios; // Necesario si obtienes RepositorioAdHoc desde aquí
-import repositorio.RepositorioException;
+import repositorio.EntidadNoEncontrada; 
+import repositorio.FactoriaRepositorios;
+import repositorio.Repositorio; 
+import repositorio.RepositorioException; 
 import repositoriosAdHoc.RepositorioProductoAdHoc;
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.ArrayList; // Para el return temporal en buscarProductos
+import java.util.ArrayList;
 
 public class ServicioProductos implements IServiciosProductos {
 
-	private IRepositorioProducto repositorioProducto;
-	private IRepositorioUsuario repositorioUsuario;
-	private IRepositorioCategorias repositorioCategoria;
+	private IRepositorioProducto repositorioProducto = FactoriaRepositorios.getRepositorio(Producto.class);
+	private IRepositorioUsuario repositorioUsuario = FactoriaRepositorios.getRepositorio(Usuario.class);
+	private IRepositorioCategorias repositorioCategoria = FactoriaRepositorios.getRepositorio(Categoria.class);
+	// El repositorio AdHoc se obtendrá mediante cast cuando se necesite
 
-
-	// Constructor para inyección de dependencias
-	public ServicioProductos(IRepositorioProducto repositorioProducto,
-							 IRepositorioUsuario repositorioUsuario,
-							 IRepositorioCategorias repositorioCategoria) {
-		this.repositorioProducto = repositorioProducto;
-		this.repositorioUsuario = repositorioUsuario;
-		this.repositorioCategoria = repositorioCategoria;
-		
+	public ServicioProductos() {
+		// Constructor vacío
 	}
 
 	@Override
@@ -42,16 +36,9 @@ public class ServicioProductos implements IServiciosProductos {
 		if (titulo == null || titulo.trim().isEmpty() || precio < 0 || estado == null || idCategoria == null || idVendedor == null) {
 			 throw new IllegalArgumentException("Faltan datos obligatorios o son inválidos para dar de alta el producto.");
 		}
-
+		// Las llamadas a repo usan los atributos inicializados arriba
 		Usuario vendedor = repositorioUsuario.getById(idVendedor);
-		if (vendedor == null) {
-			throw new EntidadNoEncontrada("No se encontró el usuario vendedor con ID: " + idVendedor);
-		}
-
 		Categoria categoria = repositorioCategoria.getById(idCategoria);
-		if (categoria == null) {
-			throw new EntidadNoEncontrada("No se encontró la categoría con ID: " + idCategoria);
-		}
 
 		Producto nuevoProducto = new Producto();
 		nuevoProducto.setTitulo(titulo);
@@ -63,39 +50,28 @@ public class ServicioProductos implements IServiciosProductos {
 		nuevoProducto.setVendedor(vendedor);
 		nuevoProducto.setFechaPublicacion(LocalDateTime.now());
 		nuevoProducto.setVisualizaciones(0);
-		// lugarRecogida se asigna después
 
 		repositorioProducto.add(nuevoProducto);
 
 		if (nuevoProducto.getId() == null) {
-			 System.err.println("Advertencia: El ID del producto no se generó inmediatamente después de add(). Considerar flush.");
-			 // Considerar lanzar una excepción o buscar el producto si el ID es estrictamente necesario aquí.
+			 System.err.println("Advertencia: El ID del producto no se generó inmediatamente después de add().");
 		}
 		return nuevoProducto.getId();
 	}
 
 	@Override
 	public void asignarLugarRecogida(String idProducto, String descripcionLugar, double longitud, double latitud)
-						throws EntidadNoEncontrada, RepositorioException {
+						throws EntidadNoEncontrada, RepositorioException, IllegalArgumentException {
 
 		Producto producto = repositorioProducto.getById(idProducto);
 
-		if (producto == null) {
-			throw new EntidadNoEncontrada("No se encontró el producto con ID: " + idProducto);
-		}
-		
 		if (descripcionLugar == null || descripcionLugar.trim().isEmpty()) {
 		    throw new IllegalArgumentException("La descripción del lugar de recogida no puede estar vacía.");
 		}
 		LugarRecogida nuevoLugar = new LugarRecogida(descripcionLugar, longitud, latitud);
-
 		producto.setLugarRecogida(nuevoLugar);
 
-		try {
-			repositorioProducto.update(producto);
-		} catch (RepositorioException e) {
-			throw new RepositorioException("Error al actualizar el lugar de recogida para el producto ID: " + idProducto, e);
-		}
+		repositorioProducto.update(producto);
 	}
 
 	@Override
@@ -103,11 +79,7 @@ public class ServicioProductos implements IServiciosProductos {
 						throws EntidadNoEncontrada, IllegalArgumentException, RepositorioException {
 
 		Producto producto = repositorioProducto.getById(idProducto);
-		if (producto == null) {
-			throw new EntidadNoEncontrada("No se encontró el producto con ID: " + idProducto);
-		}
-
-		boolean modificado = false; 
+		boolean modificado = false;
 
 		if (nuevoPrecio != null) {
 			if (nuevoPrecio < 0) {
@@ -116,63 +88,96 @@ public class ServicioProductos implements IServiciosProductos {
 			producto.setPrecio(nuevoPrecio);
 			modificado = true;
 		}
-
 		if (nuevaDescripcion != null) {
 			producto.setDescripcion(nuevaDescripcion);
 			modificado = true;
 		}
 
 		if (modificado) {
-			try {
-				repositorioProducto.update(producto);
-			} catch (RepositorioException e) {
-				throw new RepositorioException("Error al modificar el producto ID: " + idProducto, e);
-			}
-		} else {
-			System.out.println("No se especificaron cambios para el producto ID: " + idProducto);
+			repositorioProducto.update(producto);
 		}
 	}
-	
-	//MÉTODO IMPLÍCITO PARA LA HISTORIA 6 Y 7
+
 	@Override
 	public void anadirVisualizacion(String idProducto)
 						throws EntidadNoEncontrada, RepositorioException {
 
 		Producto producto = repositorioProducto.getById(idProducto);
-		if (producto == null) {
-			throw new EntidadNoEncontrada("No se encontró el producto con ID: " + idProducto + " para añadir visualización.");
-		}
-
 		int visualizacionesActuales = producto.getVisualizaciones();
 		producto.setVisualizaciones(visualizacionesActuales + 1);
-
-		try {
-			repositorioProducto.update(producto);
-		} catch (RepositorioException e) {
-			throw new RepositorioException("Error al añadir visualización al producto ID: " + idProducto, e);
-		}
+		repositorioProducto.update(producto);
 	}
 
 	@Override
-	public List<Producto> historialDelMes(int mes, int ano) throws RepositorioException {
-		// TODO: Implementar lógica Historia 6
-		throw new UnsupportedOperationException("Método historialDelMes no implementado todavía");
+	public List<Producto> historialDelMes(int mes, int ano) throws RepositorioException, IllegalArgumentException { // Añadir IllegalArgumentException
+		if (mes < 1 || mes > 12 || ano <= 0) {
+		    throw new IllegalArgumentException("Mes o año inválido.");
+		}
+		RepositorioProductoAdHoc repoAdHoc = getRepositorioProductoAdHoc(); // Usa método auxiliar
+		return repoAdHoc.findProductosByMonthAndYearOrderedByVisualizaciones(mes, ano);
 	}
 
 	@Override
 	public List<Producto> buscarProductos(String idCategoria, String textoDescripcion, EstadoProducto estadoMinimo, Double precioMax)
-	                    throws RepositorioException {
-		// TODO: Implementar lógica Historia 7
-		
-		System.out.println("TODO: Implementar búsqueda de productos..."); // Mensaje temporal
+	                    throws RepositorioException, EntidadNoEncontrada { // Declara checked
 
-		RepositorioProductoAdHoc repoAdHoc = FactoriaRepositorios.getRepositorio(getClass());
-		if (repoAdHoc != null) {
- 		    return repoAdHoc.findProductosByCriteria(idCategoria, textoDescripcion, estadoMinimo, precioMax);
-		} else {
-		    System.err.println("Error: No se pudo obtener RepositorioProductoAdHoc desde FactoriaRepositorios.");
-		    return new ArrayList<>(); // Devolver lista vacía en caso de error al obtener el repo
+		List<String> idsCategoriasParaBuscar = null;
+
+		// Paso 1: Obtener IDs de categoría (raíz + descendientes) si se especifica
+		if (idCategoria != null && !idCategoria.trim().isEmpty()) {
+			idsCategoriasParaBuscar = new ArrayList<>();
+			IServiciosCategorias servicioCategorias = null;
+			IRepositorioCategorias repoCat = null;
+
+			try {
+				servicioCategorias = FactoriaServicios.getServicio(IServiciosCategorias.class);
+				repoCat = FactoriaRepositorios.getRepositorio(Categoria.class);
+
+				Categoria catRaiz = repoCat.getById(idCategoria); // Lanza checked si no existe
+				idsCategoriasParaBuscar.add(catRaiz.getId());
+
+				List<Categoria> descendientes = servicioCategorias.recuperarTodosDescendientes(idCategoria); // Lanza checked
+
+				if (descendientes != null) {
+					for (Categoria cat : descendientes) {
+						if (!idsCategoriasParaBuscar.contains(cat.getId())) {
+							idsCategoriasParaBuscar.add(cat.getId());
+						}
+					}
+				}
+
+			} catch (EntidadNoEncontrada | RepositorioException e) {
+				// Propagar excepción checked si falla la obtención de categorías
+				throw e;
+			} catch (RuntimeException e) { // Capturar error de Factorías
+				throw new RepositorioException("Error al obtener servicio/repositorio de categorías para búsqueda", e); // Envolver en checked
+			}
+            // Si la lista quedó vacía (solo si catRaiz fue null y no lanzó excepción)
+            if (idsCategoriasParaBuscar.isEmpty()) {
+                 throw new EntidadNoEncontrada("No se pudo obtener información para la categoría raíz ID: " + idCategoria);
+            }
 		}
-		// throw new UnsupportedOperationException("Método buscarProductos no implementado todavía"); // Quitar esto al implementar
+
+		// Paso 2: Obtener repo AdHoc y llamar a la búsqueda
+		RepositorioProductoAdHoc repoAdHoc = getRepositorioProductoAdHoc(); // Lanza checked RepositorioException
+		return repoAdHoc.findProductosByCriteria(idsCategoriasParaBuscar, textoDescripcion, estadoMinimo, precioMax); // Lanza checked RepositorioException
+	}
+
+	/**
+	 * Método auxiliar para obtener el repositorio AdHoc mediante cast (estilo encuestas).
+	 */
+	private RepositorioProductoAdHoc getRepositorioProductoAdHoc() throws RepositorioException {
+		RepositorioProductoAdHoc repoAdHoc = null;
+		try {
+			// Usa el atributo 'repositorioProducto' que ya fue inicializado
+			if (this.repositorioProducto instanceof RepositorioProductoAdHoc) {
+				repoAdHoc = (RepositorioProductoAdHoc) this.repositorioProducto;
+			} else {
+				throw new RepositorioException("La implementación del repositorio de Producto no soporta operaciones AdHoc.");
+			}
+		} catch (RuntimeException e) { // Captura error de la Factoría al inicializar repositorioProducto
+		    throw new RepositorioException("Error al obtener el repositorio AdHoc de Producto", e); // Envuelve en checked
+		}
+		return repoAdHoc;
 	}
 }

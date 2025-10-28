@@ -18,6 +18,8 @@ import repositorio.FactoriaRepositorios;
 import repositorio.RepositorioException;
 import repositoriosModelo.IRepositorioCategorias;
 import repositoriosModelo.RepositorioProductosJPA;
+import servicio.FactoriaServicios;
+import servicio.IServiciosCategorias;
 import utils.EntityManagerHelper;
 
 public class RepositorioProductoAdHocJPA extends RepositorioProductosJPA implements RepositorioProductoAdHoc {
@@ -27,7 +29,7 @@ public class RepositorioProductoAdHocJPA extends RepositorioProductosJPA impleme
 	 * Construye una consulta JPQL dinámica.
 	 */
 	@Override
-	public List<Producto> findProductosByCriteria(String idCategoriaRaiz, String textoDescripcion,
+	public List<Producto> findProductosByCriteria(List<String> idsCategorias, String textoDescripcion,
 	                                            EstadoProducto estadoMinimo, Double precioMax)
 	                                            throws RepositorioException {
 
@@ -37,14 +39,14 @@ public class RepositorioProductoAdHocJPA extends RepositorioProductosJPA impleme
 			StringBuilder jpql = new StringBuilder("SELECT p FROM Producto p WHERE 1=1");
 			Map<String, Object> parameters = new HashMap<>();
 
-			if (idCategoriaRaiz != null && !idCategoriaRaiz.trim().isEmpty()) {
-				List<String> idsCategorias = obtenerIdsCategoriasDescendientes(idCategoriaRaiz);
-				if (idsCategorias != null && !idsCategorias.isEmpty()) {
+			if (idsCategorias != null && !idsCategorias.isEmpty()) {
+				//List<String> idsCategorias = obtenerIdsCategoriasDescendientes(idCategoriaRaiz);
+				//if (idsCategorias != null && !idsCategorias.isEmpty()) {
 					jpql.append(" AND p.categoria.id IN :listaIdsCategorias");
 					parameters.put("listaIdsCategorias", idsCategorias);
-				} else {
-				    return new ArrayList<>();
-				}
+				//} else {
+				  //  return new ArrayList<>();
+				//}
 			}
 
 			if (textoDescripcion != null && !textoDescripcion.trim().isEmpty()) {
@@ -74,8 +76,8 @@ public class RepositorioProductoAdHocJPA extends RepositorioProductosJPA impleme
 
 			return query.getResultList();
 
-		} catch (RepositorioException re) {
-		    throw re; // Relanzar
+		//} catch (RepositorioException re) {
+		  //  throw re; // Relanzar
 		} catch (Exception e) {
 			throw new RepositorioException("Error al buscar productos por criterios", e);
 		} finally {
@@ -108,28 +110,50 @@ public class RepositorioProductoAdHocJPA extends RepositorioProductosJPA impleme
 	}
 
 	// --- MÉTODOS AUXILIARES ---
-
+	
 	/**
 	 * Obtiene los IDs de una categoría y todas sus descendientes.
-	 * TODO: Implementar obtención real de IDs descendientes llamando al servicio/repositorio de Categorías.
+	 * Llama al servicio de Categorías.
 	 */
+	/** NO USADO PARA CERRAR BIEN EL ENTITY MANAGER
 	private List<String> obtenerIdsCategoriasDescendientes(String idCategoriaRaiz)
 	        throws RepositorioException, EntidadNoEncontrada {
-	    // Placeholder actual - necesita ser reemplazado
-	    System.out.println("TODO: Llamar a lógica real de Categorías para obtener descendientes ID: " + idCategoriaRaiz);
+
 	    List<String> ids = new ArrayList<>();
-	    IRepositorioCategorias repoCat = FactoriaRepositorios.getRepositorio(Categoria.class);
-	    Categoria catRaiz = repoCat.getById(idCategoriaRaiz);
-	    if (catRaiz != null) {
-	        ids.add(catRaiz.getId());
-	        // Añadir aquí la lógica real para obtener IDs descendientes
+	    IServiciosCategorias servicioCategorias = null;
+        IRepositorioCategorias repoCat = null;
+
+	    try {
+	        servicioCategorias = FactoriaServicios.getServicio(IServiciosCategorias.class);
+            repoCat = FactoriaRepositorios.getRepositorio(Categoria.class);
+
+            Categoria catRaiz = repoCat.getById(idCategoriaRaiz);
+            ids.add(catRaiz.getId());
+
+	        List<Categoria> descendientes = servicioCategorias.recuperarTodosDescendientes(idCategoriaRaiz);
+
+	        if (descendientes != null) {
+	            for (Categoria cat : descendientes) {
+                    if (!ids.contains(cat.getId())) {
+	                    ids.add(cat.getId());
+                    }
+	            }
+	        }
+
+	    } catch (EntidadNoEncontrada | RepositorioException e) {
+	        throw e;
+	    } catch (RuntimeException e) {
+	        throw new RepositorioException("Error al obtener servicio/repositorio de categorías", e);
+	    } catch (Exception e) {
+	        throw new RepositorioException("Error inesperado al obtener IDs de categorías descendientes", e);
 	    }
-	    if (ids.isEmpty() && catRaiz == null) {
-	         System.err.println("Advertencia: No se encontró la categoría raíz con ID: " + idCategoriaRaiz);
-	    }
+
+        if (ids.isEmpty()) {
+             throw new EntidadNoEncontrada("No se pudo obtener información para la categoría raíz ID: " + idCategoriaRaiz);
+        }
 	    return ids;
 	}
-
+	*/
 	/**
 	 * Devuelve una lista de Estados de Producto iguales o mejores que el estado dado.
 	 */
