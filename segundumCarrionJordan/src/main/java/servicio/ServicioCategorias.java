@@ -76,8 +76,7 @@ public class ServicioCategorias implements IServiciosCategorias {
 	    repositorioCategoria.getById(idCategoriaPadre); // Lanza si no existe
 
 	    List<Categoria> todosLosDescendientes = new ArrayList<>();
-	    RepositorioCategoriasAdHoc repoAdHoc = getRepositorioCategoriasAdHoc(); // Obtener AdHoc una vez
-
+	    RepositorioCategoriasAdHoc repoAdHoc = FactoriaRepositorios.getRepositorio(RepositorioCategoriasAdHoc.class);
 	    // Llamar al auxiliar recursivo
 	    buscarDescendientesRecursivo(idCategoriaPadre, todosLosDescendientes, repoAdHoc);
 	    return todosLosDescendientes;
@@ -102,23 +101,6 @@ public class ServicioCategorias implements IServiciosCategorias {
 	            buscarDescendientesRecursivo(hijo.getId(), acumulados, repoAdHoc);
 	        }
 	    }
-	}
-
-    // ---> NUEVO MÉTODO AUXILIAR PARA OBTENER ADHOC <---
-	/**
-	 * Obtiene el RepositorioCategoriasAdHoc mediante cast.
-     * Maneja RuntimeException de la factoría.
-	 */
-	private RepositorioCategoriasAdHoc getRepositorioCategoriasAdHoc() throws RepositorioException {
-	    try {
-    		if (this.repositorioCategoria instanceof RepositorioCategoriasAdHoc) {
-    			return (RepositorioCategoriasAdHoc) this.repositorioCategoria;
-    		} else {
-    			throw new RepositorioException("La implementación del repositorio de Categoría no soporta operaciones AdHoc.");
-    		}
-        } catch (RuntimeException e) { // Captura error de Factoría al obtener repositorioCategoria
-            throw new RepositorioException("Error al obtener repositorio AdHoc de Categoría", e); // Envuelve en checked
-        }
 	}
 	
 }

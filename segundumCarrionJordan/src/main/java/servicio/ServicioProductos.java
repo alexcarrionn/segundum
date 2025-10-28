@@ -11,7 +11,8 @@ import repositoriosModelo.IRepositorioCategorias;
 import repositorio.EntidadNoEncontrada; 
 import repositorio.FactoriaRepositorios;
 import repositorio.Repositorio; 
-import repositorio.RepositorioException; 
+import repositorio.RepositorioException;
+import repositoriosAdHoc.RepositorioCategoriasAdHoc;
 import repositoriosAdHoc.RepositorioProductoAdHoc;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,10 +23,8 @@ public class ServicioProductos implements IServiciosProductos {
 	private IRepositorioProducto repositorioProducto = FactoriaRepositorios.getRepositorio(Producto.class);
 	private IRepositorioUsuario repositorioUsuario = FactoriaRepositorios.getRepositorio(Usuario.class);
 	private IRepositorioCategorias repositorioCategoria = FactoriaRepositorios.getRepositorio(Categoria.class);
-	// El repositorio AdHoc se obtendrá mediante cast cuando se necesite
 
 	public ServicioProductos() {
-		// Constructor vacío
 	}
 
 	@Override
@@ -36,7 +35,6 @@ public class ServicioProductos implements IServiciosProductos {
 		if (titulo == null || titulo.trim().isEmpty() || precio < 0 || estado == null || idCategoria == null || idVendedor == null) {
 			 throw new IllegalArgumentException("Faltan datos obligatorios o son inválidos para dar de alta el producto.");
 		}
-		// Las llamadas a repo usan los atributos inicializados arriba
 		Usuario vendedor = repositorioUsuario.getById(idVendedor);
 		Categoria categoria = repositorioCategoria.getById(idCategoria);
 
@@ -109,21 +107,20 @@ public class ServicioProductos implements IServiciosProductos {
 	}
 
 	@Override
-	public List<Producto> historialDelMes(int mes, int ano) throws RepositorioException, IllegalArgumentException { // Añadir IllegalArgumentException
+	public List<Producto> historialDelMes(int mes, int ano) throws RepositorioException, IllegalArgumentException {
 		if (mes < 1 || mes > 12 || ano <= 0) {
 		    throw new IllegalArgumentException("Mes o año inválido.");
 		}
-		RepositorioProductoAdHoc repoAdHoc = getRepositorioProductoAdHoc(); // Usa método auxiliar
+		RepositorioProductoAdHoc repoAdHoc = FactoriaRepositorios.getRepositorio(RepositorioProductoAdHoc.class);
 		return repoAdHoc.findProductosByMonthAndYearOrderedByVisualizaciones(mes, ano);
 	}
 
 	@Override
 	public List<Producto> buscarProductos(String idCategoria, String textoDescripcion, EstadoProducto estadoMinimo, Double precioMax)
-	                    throws RepositorioException, EntidadNoEncontrada { // Declara checked
+	                    throws RepositorioException, EntidadNoEncontrada { 
 
 		List<String> idsCategoriasParaBuscar = null;
 
-		// Paso 1: Obtener IDs de categoría (raíz + descendientes) si se especifica
 		if (idCategoria != null && !idCategoria.trim().isEmpty()) {
 			idsCategoriasParaBuscar = new ArrayList<>();
 			IServiciosCategorias servicioCategorias = null;
@@ -133,10 +130,10 @@ public class ServicioProductos implements IServiciosProductos {
 				servicioCategorias = FactoriaServicios.getServicio(IServiciosCategorias.class);
 				repoCat = FactoriaRepositorios.getRepositorio(Categoria.class);
 
-				Categoria catRaiz = repoCat.getById(idCategoria); // Lanza checked si no existe
+				Categoria catRaiz = repoCat.getById(idCategoria); 
 				idsCategoriasParaBuscar.add(catRaiz.getId());
 
-				List<Categoria> descendientes = servicioCategorias.recuperarTodosDescendientes(idCategoria); // Lanza checked
+				List<Categoria> descendientes = servicioCategorias.recuperarTodosDescendientes(idCategoria); 
 
 				if (descendientes != null) {
 					for (Categoria cat : descendientes) {
@@ -147,37 +144,16 @@ public class ServicioProductos implements IServiciosProductos {
 				}
 
 			} catch (EntidadNoEncontrada | RepositorioException e) {
-				// Propagar excepción checked si falla la obtención de categorías
 				throw e;
-			} catch (RuntimeException e) { // Capturar error de Factorías
+			} catch (RuntimeException e) { 
 				throw new RepositorioException("Error al obtener servicio/repositorio de categorías para búsqueda", e); // Envolver en checked
 			}
-            // Si la lista quedó vacía (solo si catRaiz fue null y no lanzó excepción)
             if (idsCategoriasParaBuscar.isEmpty()) {
                  throw new EntidadNoEncontrada("No se pudo obtener información para la categoría raíz ID: " + idCategoria);
             }
 		}
 
-		// Paso 2: Obtener repo AdHoc y llamar a la búsqueda
-		RepositorioProductoAdHoc repoAdHoc = getRepositorioProductoAdHoc(); // Lanza checked RepositorioException
+		RepositorioProductoAdHoc repoAdHoc = FactoriaRepositorios.getRepositorio(RepositorioProductoAdHoc.class);
 		return repoAdHoc.findProductosByCriteria(idsCategoriasParaBuscar, textoDescripcion, estadoMinimo, precioMax); // Lanza checked RepositorioException
-	}
-
-	/**
-	 * Método auxiliar para obtener el repositorio AdHoc mediante cast (estilo encuestas).
-	 */
-	private RepositorioProductoAdHoc getRepositorioProductoAdHoc() throws RepositorioException {
-		RepositorioProductoAdHoc repoAdHoc = null;
-		try {
-			// Usa el atributo 'repositorioProducto' que ya fue inicializado
-			if (this.repositorioProducto instanceof RepositorioProductoAdHoc) {
-				repoAdHoc = (RepositorioProductoAdHoc) this.repositorioProducto;
-			} else {
-				throw new RepositorioException("La implementación del repositorio de Producto no soporta operaciones AdHoc.");
-			}
-		} catch (RuntimeException e) { // Captura error de la Factoría al inicializar repositorioProducto
-		    throw new RepositorioException("Error al obtener el repositorio AdHoc de Producto", e); // Envuelve en checked
-		}
-		return repoAdHoc;
 	}
 }
