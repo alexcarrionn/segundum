@@ -117,7 +117,7 @@ public class Programa {
 				});
 				
 				// --- HECHO POR BORJA: PRUEBAS DE PRODUCTOS ---
-				System.out.println("\n\n--- INICIO PRUEBAS PRODUCTOS (TU PARTE) ---");
+				System.out.println("\n\n--- INICIO PRUEBAS PRODUCTOS ---");
 
 				// Comprobar si se pudo obtener/crear el idUsuario de la parte anterior
 				if (idUsuario == null) {
