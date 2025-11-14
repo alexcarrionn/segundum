@@ -6,7 +6,7 @@
 	<groupId>segundumCarrionJordan</groupId>
 	<artifactId>segundumCarrionJordan</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>segundumCarrionJordan</name>
 	<url>http://maven.apache.org</url>
@@ -66,6 +66,39 @@
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
 			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.glassfish</groupId>
+		    <artifactId>javax.faces</artifactId>
+		    <version>2.3.9</version>
+		</dependency>
+		<dependency>
+		    <groupId>javax.enterprise</groupId>
+		    <artifactId>cdi-api</artifactId>
+		    <version>2.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.jboss.weld.servlet</groupId>
+		    <artifactId>weld-servlet-shaded</artifactId>
+		    <version>3.1.9.Final</version>          
+		</dependency>
+				<!-- jetty -->
+		<dependency>
+		    <groupId>org.eclipse.jetty</groupId>
+		    <artifactId>jetty-servlets</artifactId>
+		    <version>10.0.18</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.eclipse.jetty</groupId>
+		    <artifactId>jetty-server</artifactId>
+		    <version>10.0.18</version>
+		</dependency>
+		<!-- PrimeFaces UI components -->
+		<dependency>
+		    <groupId>org.primefaces</groupId>
+		    <artifactId>primefaces</artifactId>
+		    <version>15.0.0</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -133,4 +166,16 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	
+	<build>
+	    <plugins>
+	        <plugin>
+	            <groupId>org.eclipse.jetty</groupId>
+	            <artifactId>jetty-maven-plugin</artifactId>
+	            <version>10.0.18</version>
+	        </plugin>
+	    </plugins>
+	</build>
+
+
 </project>
