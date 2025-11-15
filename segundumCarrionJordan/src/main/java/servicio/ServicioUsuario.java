@@ -18,7 +18,6 @@ public class ServicioUsuario implements IServicioUsuario {
 	
 	//definimos el servicio de categorias para usar
 	private IServiciosCategorias servicioCategorias = new ServicioCategorias();
-	private Usuario usuarioActual;
 	
 	
 	/**
@@ -157,20 +156,16 @@ public class ServicioUsuario implements IServicioUsuario {
 	}
 
 	@Override
-	public void iniciarSesion(String email, String clave) throws RepositorioException, EntidadNoEncontrada {
+	public Usuario iniciarSesion(String email, String clave) throws RepositorioException, EntidadNoEncontrada {
 		Usuario usuario = repositorioAdHoc.buscarPorEmail(email);
 		
 		if (usuario == null) {
 			throw new EntidadNoEncontrada("No se encontró el usuario con email: " + email);
 		}
-		
 		if (!usuario.getClave().equals(clave)) {
-			throw new RepositorioException("La clave es incorrecta");
+			throw new RepositorioException("Contraseña incorrecta");
 		}
-		
-		//Si todo es correcto, establecemos el usuario actual
-		this.usuarioActual = usuario;
-		
+		return usuario;	
 	}
 
 	

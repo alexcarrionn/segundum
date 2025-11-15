@@ -18,14 +18,14 @@ public class RepositorioUsuarioAdHocJPA extends RepositorioUsuarioJPA implements
 	 * Esta función nos permite buscar un usuario por su email.
 	 */
 	@Override
-	public Usuario buscarPorEmail(String Email) throws RepositorioException {
+	public Usuario buscarPorEmail(String email) throws RepositorioException {
 		try {
 			EntityManager em = EntityManagerHelper.getEntityManager();
 			String queryString = "SELECT u FROM Usuario u WHERE u.email = :emailParam";
 			
 			TypedQuery<Usuario> query = em.createQuery(queryString, Usuario.class);
 			query.setHint(QueryHints.REFRESH, HintValues.TRUE);
-			query.setParameter("emailParam", Email);
+			query.setParameter("emailParam", email);
 			return query.getSingleResult();
 		} catch (javax.persistence.NoResultException e) {
 	        // Si no lo encuentra, devuelve null en lugar de lanzar una excepción

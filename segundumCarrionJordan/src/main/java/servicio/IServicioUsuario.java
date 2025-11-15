@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
+import modelo.Usuario;
 
 public interface IServicioUsuario {
 	
@@ -19,7 +20,7 @@ public interface IServicioUsuario {
 
 	void asignarRolAdmin(String idUsuario2) throws RepositorioException, EntidadNoEncontrada;
 
-	void iniciarSesion(String email, String clave) throws RepositorioException, EntidadNoEncontrada;
+	Usuario iniciarSesion(String email, String clave) throws RepositorioException, EntidadNoEncontrada;
 
 	
 }

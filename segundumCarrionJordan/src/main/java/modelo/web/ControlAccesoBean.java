@@ -1,0 +1,35 @@
+package modelo.web;
+
+import java.io.Serializable;
+import javax.faces.context.FacesContext;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
+import modelo.Usuario;
+
+@SuppressWarnings("serial")
+@Named
+@SessionScoped
+public class ControlAccesoBean implements Serializable{
+
+    private Usuario usuarioLogueado; 
+
+    private boolean isUsuarioLogueado() {
+        return usuarioLogueado != null;
+    }
+
+    public Usuario getUsuarioLogueado() {
+        return usuarioLogueado;
+    }
+
+    public void setUsuarioLogueado(Usuario usuarioLogueado) {
+        this.usuarioLogueado = usuarioLogueado;
+    }
+
+    public String logout() {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        this.usuarioLogueado = null;
+        return "login.xhtml?faces-redirect=true";
+    }
+
+}
+    

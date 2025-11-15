@@ -1,0 +1,41 @@
+<ui:composition template="/WEB-INF/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name ="title"> 
+        Iniciar Sesión
+    </ui:define>
+
+	<ui:param name="estilo3" value="current"/>
+
+	<ui:define name="content">
+		<div class="row">
+			<div class="col-12">
+				<div class="content">
+					<h:form id="loginForm">
+					
+						<h:panelGrid columns="2">
+							<p:outputLabel for="email" value="Email: " />
+							<p:inputText id="email" value="#{loginBean.email}" required="true" requiredMessage="El email es obligatorio" />
+							<p:outputLabel for="password" value="Contraseña: " />
+							<p:password id="password" value="#{loginBean.password}" required="true" requiredMessage="La contraseña es obligatoria" />
+						</h:panelGrid>
+
+						<div style="text-align:center; margin-top:15px;">
+							<p:commandButton value="Iniciar Sesión"
+											 action="#{loginBean.login}"
+											 process="@form"
+											 ajax="false" />
+						</div>
+
+						<p:messages id="msgs" autoUpdate="false" showSummary="true" showDetail="false"/>	
+					</h:form>
+				</div>
+			</div>
+		</div>
+
+	</ui:define>
+</ui:composition>
