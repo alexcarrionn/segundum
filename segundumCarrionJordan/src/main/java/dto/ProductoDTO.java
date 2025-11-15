@@ -1,5 +1,11 @@
 package dto;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
+import modelo.Categoria;
+import modelo.EstadoProducto;
+import modelo.LugarRecogida;
+import modelo.Usuario;
 
 public class ProductoDTO implements Serializable {
 	private String id;
@@ -14,9 +20,10 @@ public class ProductoDTO implements Serializable {
     private LugarRecogida lugarRecogida;
 	private Usuario vendedor; 
 
-   	public Producto(String titulo, String descripcion, double precio, EstadoProducto estado, LocalDateTime fechaPublicacion,
+   	public ProductoDTO(String id,String titulo, String descripcion, double precio, EstadoProducto estado, LocalDateTime fechaPublicacion,
 			Categoria categoria, int visualizaciones, boolean envioDisponible, LugarRecogida lugarRecogida,
 			Usuario vendedor) {
+		this.id = id;
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.precio = precio;

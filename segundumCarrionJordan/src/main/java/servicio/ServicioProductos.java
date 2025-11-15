@@ -10,12 +10,13 @@ import repositoriosModelo.IRepositorioUsuario;
 import repositoriosModelo.IRepositorioCategorias;
 import repositorio.EntidadNoEncontrada; 
 import repositorio.FactoriaRepositorios;
-import repositorio.Repositorio; 
 import repositorio.RepositorioException;
-import repositoriosAdHoc.RepositorioCategoriasAdHoc;
 import repositoriosAdHoc.RepositorioProductoAdHoc;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import dto.ProductoDTO;
+
 import java.util.ArrayList;
 
 public class ServicioProductos implements IServiciosProductos {
@@ -165,4 +166,8 @@ public class ServicioProductos implements IServiciosProductos {
 			
 			return transformToDTO(repositorioProducto.getById(idProducto));
 	}
+	
+	private ProductoDTO transformToDTO(Producto producto) {        
+		ProductoDTO encuestaDTO = new ProductoDTO(producto.getId(),producto.getTitulo(), producto.getDescripcion(), producto.getPrecio(), producto.getEstado(), producto.getFechaPublicacion(),producto.getCategoria(), producto.getVisualizaciones(), producto.isEnvioDisponible(), producto.getLugarRecogida(), producto.getVendedor());
+	        return encuestaDTO;    }
 }
