@@ -19,6 +19,7 @@ public interface IServicioUsuario {
 
 	void asignarRolAdmin(String idUsuario2) throws RepositorioException, EntidadNoEncontrada;
 
+	void iniciarSesion(String email, String clave) throws RepositorioException, EntidadNoEncontrada;
 
 	
 }

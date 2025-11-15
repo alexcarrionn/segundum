@@ -156,4 +156,13 @@ public class ServicioProductos implements IServiciosProductos {
 		RepositorioProductoAdHoc repoAdHoc = FactoriaRepositorios.getRepositorio(RepositorioProductoAdHoc.class);
 		return repoAdHoc.findProductosByCriteria(idsCategoriasParaBuscar, textoDescripcion, estadoMinimo, precioMax); // Lanza checked RepositorioException
 	}
+
+	//Creamos una nueva funcion que nos permitira conseguir un ProductoDTO 
+	@Override
+	public ProductoDTO getProductoDTO(String idProducto) throws EntidadNoEncontrada, RepositorioException {
+	   			if (idProducto == null || idProducto.isEmpty())
+				throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
+			
+			return transformToDTO(repositorioProducto.getById(idProducto));
+	}
 }

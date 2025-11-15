@@ -5,6 +5,7 @@ import modelo.EstadoProducto;
 import modelo.Producto;
 import repositorio.EntidadNoEncontrada;
 import repositorio.RepositorioException;
+import dto.ProductoDTO;
 
 /**
  * Interfaz que define los servicios relacionados con la gestión de Productos.
@@ -36,5 +37,7 @@ public interface IServiciosProductos {
 	// Busca productos a la venta según criterios opcionales. (Historia 7)
 	List<Producto> buscarProductos(String idCategoria, String textoDescripcion, EstadoProducto estadoMinimo, Double precioMax)
 	                    throws RepositorioException, EntidadNoEncontrada;
+
+	ProductoDTO getProductoDTO(String idProducto) throws EntidadNoEncontrada, RepositorioException; 
 
 }

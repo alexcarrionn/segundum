@@ -18,7 +18,7 @@ public class ServicioUsuario implements IServicioUsuario {
 	
 	//definimos el servicio de categorias para usar
 	private IServiciosCategorias servicioCategorias = new ServicioCategorias();
-	
+	private Usuario usuarioActual;
 	
 	
 	/**
@@ -153,6 +153,23 @@ public class ServicioUsuario implements IServicioUsuario {
 		//Guardamos los cambios en el repositorio
 		repositorio.update(usuario);
 		
+		
+	}
+
+	@Override
+	public void iniciarSesion(String email, String clave) throws RepositorioException, EntidadNoEncontrada {
+		Usuario usuario = repositorioAdHoc.buscarPorEmail(email);
+		
+		if (usuario == null) {
+			throw new EntidadNoEncontrada("No se encontró el usuario con email: " + email);
+		}
+		
+		if (!usuario.getClave().equals(clave)) {
+			throw new RepositorioException("La clave es incorrecta");
+		}
+		
+		//Si todo es correcto, establecemos el usuario actual
+		this.usuarioActual = usuario;
 		
 	}
 
