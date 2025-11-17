@@ -82,8 +82,8 @@
                                  onclick="PF('dialogResultado').hide()" type="button" 
                                  style="margin-top:5px" />
 
-                <p:linkButton value="Ver mis productos" rendered="#{!crearProductoBean.errorAlCrear}"
-                              outcome="misProductos" style="margin-top:5px; margin-right: 5px;"/>
+				<p:linkButton value="Ver mis productos" rendered="#{!crearProductoBean.errorAlCrear}"
+							  outcome="/usuario/mis-productos" style="margin-top:5px; margin-right: 5px;"/>
                               
                 <p:commandButton value="Crear otro producto" rendered="#{!crearProductoBean.errorAlCrear}"
                                  onclick="PF('dialogResultado').hide()" type="button" 

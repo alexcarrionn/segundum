@@ -39,11 +39,11 @@
                         <h:outputText value="#{p.estado}" />
                     </p:column>
 
-                    <p:column headerText="Publicado" sortBy="#{p.fechaPublicacion}">
-                        <h:outputText value="#{p.fechaPublicacion}">
-                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-                        </h:outputText>
-                    </p:column>
+					<p:column headerText="Publicado" sortBy="#{p.fechaPublicacion}">
+					    <h:outputText value="#{p.fechaPublicacion}">
+					        <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy HH:mm" />
+					    </h:outputText>
+					</p:column>
 
                     <p:column headerText="Categoría" sortBy="#{p.nombreCategoria}">
                         <h:outputText value="#{p.nombreCategoria}" />
@@ -53,12 +53,11 @@
                         <h:outputText value="#{p.visualizaciones}" />
                     </p:column>
                     
-                    <p:column headerText="Acciones" style="width:100px; text-align: center">
-                        <p:button icon="pi pi-pencil" title="Editar"
-                                  outcome="editarProducto" >
-                            <f:param name="id" value="#{p.id}" />
-                        </p:button>
-                        </p:column>
+					<p:column headerText="Acciones" style="width:100px; text-align: center">
+					    <p:button icon="pi pi-pencil" title="Editar"
+					              outcome="/producto/gestionar" > <f:param name="id" value="#{p.id}" />
+					    </p:button>
+					</p:column>
 
                 </p:dataTable>
             </h:form>

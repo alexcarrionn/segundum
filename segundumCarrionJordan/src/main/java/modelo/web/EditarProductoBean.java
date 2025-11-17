@@ -86,7 +86,7 @@ public class EditarProductoBean implements Serializable {
                 "Éxito", "Producto '" + producto.getTitulo() + "' actualizado correctamente."));
             
             // Navegamos de vuelta al listado
-            return "misProductos?faces-redirect=true";
+            return "mis-productos?faces-redirect=true";
 
         } catch (Exception e) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
@@ -107,9 +107,9 @@ public class EditarProductoBean implements Serializable {
     
     private void redirectMisProductos() {
         try {
-            // Asumiendo que está en /producto/misProductos.xhtml
+            // Asumiendo que está en /producto/mis-productos.xhtml
             facesContext.getExternalContext().redirect(
-                facesContext.getExternalContext().getRequestContextPath() + "/producto/misProductos.xhtml?faces-redirect=true"
+                facesContext.getExternalContext().getRequestContextPath() + "/producto/mis-productos.xhtml?faces-redirect=true"
             );
         } catch (Exception e) { e.printStackTrace(); }
     }
