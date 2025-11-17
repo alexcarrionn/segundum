@@ -2,6 +2,7 @@ package modelo.web;
 
 import java.io.Serializable;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import modelo.Usuario;
@@ -12,8 +13,10 @@ import modelo.Usuario;
 public class ControlAccesoBean implements Serializable{
 
     private Usuario usuarioLogueado; 
+    @Inject
+    private FacesContext facesContext;
 
-    private boolean isUsuarioLogueado() {
+    public boolean isUsuarioLogueado() {
         return usuarioLogueado != null;
     }
 
@@ -26,9 +29,9 @@ public class ControlAccesoBean implements Serializable{
     }
 
     public String logout() {
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        facesContext.getExternalContext().invalidateSession();
         this.usuarioLogueado = null;
-        return "login.xhtml?faces-redirect=true";
+        return "/index.xhtml?faces-redirect=true";
     }
 
 }

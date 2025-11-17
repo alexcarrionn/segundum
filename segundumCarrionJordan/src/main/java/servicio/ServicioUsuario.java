@@ -26,7 +26,7 @@ public class ServicioUsuario implements IServicioUsuario {
 	 * el usuario no es admininistrador.
 	 */
 	@Override
-	public String registrarUsuario(String nombre, String apellidos, String email, String clave, LocalDate fechaNacimiento, String telefono) throws RepositorioException {
+	public String registrarUsuario(String nombre, String apellidos, String email, String clave, LocalDate fechaNacimiento, String telefono, boolean admin) throws RepositorioException {
 		
 		//hacemos un control de integridad de los datos
 		if (nombre == null || nombre.isEmpty()) {
@@ -58,10 +58,8 @@ public class ServicioUsuario implements IServicioUsuario {
 		}
 		
 		//Creamos el nuevo usuario
-		Usuario nuevoUsuario = new Usuario(email, nombre, apellidos, clave, fechaNacimiento, telefono, false);
-		
-		
-	
+		Usuario nuevoUsuario = new Usuario(email, nombre, apellidos, clave, fechaNacimiento, telefono, admin);
+
 		//lo almacenamos en el repositorio y devolvemos el id generado
 		 
 		

@@ -1,0 +1,58 @@
+<ui:composition template="/WEB-INF/template/template.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="title">Segundum - Buscar Productos</ui:define>
+    <ui:param name="estilo1" value="current" />
+
+    <ui:define name="content">
+        <h:panelGroup layout="block" style="text-align:center; padding:2rem;">
+            <h1>Buscar Productos</h1>
+            <p style="margin-top:1rem; font-size:1.1rem;">Explora nuestra amplia gama de productos de segunda mano. Utiliza los filtros y herramientas para encontrar exactamente lo que buscas.</p>
+        </h:panelGroup>
+
+        <div class="card" style="max-width:1100px; margin:0 auto;">
+            <h:form id="form">
+                <h5>Listado de productos disponibles en nuestra tienda</h5>
+        <p:dataTable id="basicDT" var="prod" value="#{busquedaBean.productos}" selectionMode="single" selection="#{busquedaBean.seleccionado}" rowKey="#{prod.id}">
+            <p:ajax event="rowSelect" update=":form:detalle" listener="#{busquedaBean.onRowSelect}" />
+            <p:column headerText="ID" style="width:120px">
+                <h:outputText value="#{prod.id}" />
+            </p:column>
+            <p:column headerText="Título">
+                <h:outputText value="#{prod.titulo}" />
+            </p:column>
+            <p:column headerText="Categoría">
+                <h:outputText value="#{prod.categoria.nombre}" />
+            </p:column>
+            <p:column headerText="Descripción">
+                <h:outputText value="#{prod.descripcion}" />
+            </p:column>
+            <p:column headerText="Precio">
+                <h:outputText value="#{prod.precio}" />
+            </p:column>
+            <p:column headerText="Estado">
+                <h:outputText value="#{prod.estado}" />
+            </p:column>
+            <p:column headerText="Categoría" rendered="#{not empty prod.categoria}">
+                <h:outputText value="#{prod.categoria.titulo}" />
+            </p:column>
+        </p:dataTable>
+
+        <h:panelGroup id="detalle" layout="block" style="margin-top:1.5rem" rendered="#{not empty productoBuscarWeb.seleccionado}">
+            <h3>Detalle del producto seleccionado</h3>
+            <p><strong>Título:</strong> #{productoBuscarWeb.seleccionado.titulo}</p>
+            <p><strong>Descripción:</strong> #{productoBuscarWeb.seleccionado.descripcion}</p>
+            <p><strong>Precio:</strong> #{productoBuscarWeb.seleccionado.precio}</p>
+            <p><strong>Estado:</strong> #{productoBuscarWeb.seleccionado.estado}</p>
+            <p><strong>Visualizaciones:</strong> #{productoBuscarWeb.seleccionado.visualizaciones}</p>
+            <p><strong>Fecha publicación:</strong> #{productoBuscarWeb.seleccionado.fechaPublicacion}</p>
+            <p><strong>Vendedor:</strong> #{productoBuscarWeb.seleccionado.vendedor.email}</p>
+            <p rendered="#{not empty productoBuscarWeb.seleccionado.categoria}"><strong>Categoría:</strong> #{productoBuscarWeb.seleccionado.categoria.titulo}</p>
+        </h:panelGroup>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

@@ -9,7 +9,7 @@ import modelo.Usuario;
 public interface IServicioUsuario {
 	
 	//Funcionalidad: Registrar un nuevo usuario (donde telefono es opcional)	
-	String registrarUsuario(String nombre, String apellidos, String email, String clave, LocalDate fechaNacimiento, String telefono) throws RepositorioException;
+	String registrarUsuario(String nombre, String apellidos, String email, String clave, LocalDate fechaNacimiento, String telefono, boolean admin) throws RepositorioException;
 	
 	//Funcionalidad: Permitir que un usuario existente pueda cambiar sus datos para poder mantener su informacion actualizada
 	void actualizarDatosUsuario(String idUsuario, String nombre, String apellidos, String email, String clave, LocalDate fechaNacimiento, String telefono) throws RepositorioException, EntidadNoEncontrada;
@@ -21,6 +21,7 @@ public interface IServicioUsuario {
 	void asignarRolAdmin(String idUsuario2) throws RepositorioException, EntidadNoEncontrada;
 
 	Usuario iniciarSesion(String email, String clave) throws RepositorioException, EntidadNoEncontrada;
+
 
 	
 }

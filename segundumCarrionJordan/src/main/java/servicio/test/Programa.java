@@ -53,7 +53,7 @@ public class Programa {
 
 		//Creamos el usuario INCIALIZADO ARRIBA POR BORJA
 		
-		idUsuario = servicioUsuario.registrarUsuario(nombre, apellidos, email, clave, fechaNacimiento, null);
+		idUsuario = servicioUsuario.registrarUsuario(nombre, apellidos, email, clave, fechaNacimiento, null, false);
 		
 		System.out.println("Usuario creado con ID: " + idUsuario + " con nombre: " + nombre + " " + apellidos+ ", email: " 
 		+ email + ", clave: " + clave + " y  fechaNacimiento: " + fechaNacimiento);
@@ -79,7 +79,7 @@ public class Programa {
 
 				//Creamos el usuario
 				
-				idUsuario2 = servicioUsuario.registrarUsuario(nombre2, apellidos2, email2, clave2, fechaNacimiento2, null);
+				idUsuario2 = servicioUsuario.registrarUsuario(nombre2, apellidos2, email2, clave2, fechaNacimiento2, null, false);
 				
 				//Asignamos el rol de admin
 				servicioUsuario.asignarRolAdmin(idUsuario2);

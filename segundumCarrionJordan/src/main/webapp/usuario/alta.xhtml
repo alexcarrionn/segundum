@@ -1,0 +1,58 @@
+<ui:composition template="/WEB-INF/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+ <ui:define name ="title"> 
+        Registro de Usuario
+    </ui:define>
+
+	<ui:param name="estilo3" value="current"/>
+
+	<ui:define name="content">
+		<div class="row">
+			<div class="col-12">
+				<div class="content">
+					<h:form id="registroForm">
+					
+						<h:panelGrid columns="2">
+							<p:outputLabel for="email" value="Email: " />
+							<p:inputText id="email" value="#{registroBean.email}" required="true" requiredMessage="El email es obligatorio" />
+                            <p:outputLabel for="nombre" value="Nombre: " />
+                            <p:inputText id="nombre" value="#{registroBean.nombre}" required="true" requiredMessage="El nombre es obligatorio" />
+                            <p:outputLabel for="apellidos" value="Apellido: " />
+                            <p:inputText id="apellidos" value="#{registroBean.apellidos}" required="true" requiredMessage="Los apellidos son obligatorios" />
+							<p:outputLabel for="password" value="Contraseña: " />
+							<p:password id="password" value="#{registroBean.password}" required="true" requiredMessage="La contraseña es obligatoria" />
+                            <p:outputLabel for="telefono" value="Telefono: " />
+                            <p:inputText id="telefono" value="#{registroBean.telefono}" />
+                            <p:outputLabel for="fechaNacimiento" value="Fecha de cumpleaños: " />
+                            <p:inputText id="fechaNacimiento"
+                                        value="#{registroBean.fechaNacimiento}"
+                                        style="display:inline-block;"
+                                        required="true" 
+                                        requiredMessage="La fecha de nacimiento es obligatoria"
+                                        type="date"/>
+                            <p:outputLabel for="admin" value="¿Es administrador?: " />
+                            <p:selectBooleanCheckbox id="admin" value="#{registroBean.admin}" />
+
+						</h:panelGrid>
+
+						<div style="text-align:center; margin-top:20px;">
+							<p:commandButton value="Registrarse"
+											 action="#{registroBean.registrar}"
+											 process="@form"
+											 ajax="false" />
+						</div>
+
+
+						<p:messages id="msgs" autoUpdate="false" showSummary="true" showDetail="false"/>	
+					</h:form>
+				</div>
+			</div>
+		</div>
+
+	</ui:define>
+</ui:composition>
