@@ -17,10 +17,6 @@ public class ControlAccesoBean implements Serializable{
     @Inject
     private FacesContext facesContext;
 
-    public boolean isUsuarioLogueado() {
-        return this.usuarioLogueado != null;
-    }
-
     public Usuario getUsuarioLogueado() {
         return this.usuarioLogueado;
     }

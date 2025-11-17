@@ -10,19 +10,19 @@
 	<ui:define name="content">
 		<h:panelGroup layout="block" style="text-align:center; padding:2rem;">
 			<h1>Bienvenido a Segundum</h1>
-			<h:panelGroup rendered="#{not controlAccessBean.logged}">
+			<h:panelGroup rendered="#{ controlAccesoBean.usuarioLogueado == false}">
 				<p style="margin-top:1rem; font-size:1.1rem;">Compra y comparte productos de segunda mano de forma sencilla.</p>
 
 			</h:panelGroup>
-			<h:panelGroup rendered="#{controlAccessBean.logged}">
+			<h:panelGroup rendered="#{controlAccesoBean.usuarioLogueado != false}">
 				<p style="margin-top:1rem; font-size:1.1rem;">Hola,
-					<strong>#{controlAccessBean.usuario.email}</strong>.
+					<strong>#{controlAccesoBean.usuarioLogueado}</strong>.
 					¡Gracias por volver! Explora los productos o publica uno nuevo.
 				</p>
 				<div style="margin-top:2rem;">
 					<h:link outcome="/producto/alta.xhtml" styleClass="button" value="Publicar Producto" />
 					<span style="margin:0 .75rem;"></span>
-					<h:commandLink value="Cerrar Sesión" action="#{controlAccessBean.logout}" />
+
 				</div>
 
 			</h:panelGroup>
