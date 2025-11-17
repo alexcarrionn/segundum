@@ -12,17 +12,17 @@ import modelo.Usuario;
 @SessionScoped
 public class ControlAccesoBean implements Serializable{
 
-    private Usuario usuarioLogueado; 
+    private Usuario usuarioLogueado = null; 
     
     @Inject
     private FacesContext facesContext;
 
     public boolean isUsuarioLogueado() {
-        return usuarioLogueado != null;
+        return this.usuarioLogueado != null;
     }
 
     public Usuario getUsuarioLogueado() {
-        return usuarioLogueado;
+        return this.usuarioLogueado;
     }
 
     public void setUsuarioLogueado(Usuario usuarioLogueado) {
@@ -31,7 +31,7 @@ public class ControlAccesoBean implements Serializable{
 
     public String logout() {
         this.usuarioLogueado = null;
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        facesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "/index.xhtml?faces-redirect=true";
     }
 
