@@ -33,7 +33,7 @@
                 <div class="grid ui-fluid">
                     <div class="col-12">
                         <div class="ui-inputgroup" style="max-width:250px;">
-                            <p:inputNumber id="maxPrecio" value="#{busquedaBean.filtroMaxPrecio}" mode="decimal" decimalPlaces="2" locale="es"/>
+                            <p:inputNumber id="maxPrecio" value="#{busquedaBean.filtroMaxPrecio}" placeholder="Precio máximo..." mode="decimal" decimalPlaces="2" locale="es"/>
                             <div class="ui-inputgroup-addon">€</div>
                         </div>
                     </div>
@@ -63,8 +63,11 @@
                 </div>
 
                 <!-- Botón buscar -->
-                <div style = "text-align: center; margin-bottom: 1rem;">
-                    <p:commandButton value="Buscar" action="#{busquedaBean.buscar}" update="basicDT" />
+               <div style = "text-align: center; margin-bottom: 1rem;">
+                    <p:commandButton value="Buscar" 
+                                    action="#{busquedaBean.buscar}" 
+                                    update="basicDT" 
+                                    process="@form" /> 
                 </div>
 
             <h5>Listado de productos disponibles en nuestra tienda</h5>

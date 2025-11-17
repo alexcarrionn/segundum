@@ -8,6 +8,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+
 import org.primefaces.event.SelectEvent;
 import modelo.EstadoProducto;
 import modelo.Producto;
@@ -35,11 +36,11 @@ public class BusquedaBean implements Serializable {
     private Double filtroMaxPrecio;
     private EstadoProducto filtroEstado;
 
-    private FacesContext facesContext;
+    //private FacesContext facesContext;
 
     @PostConstruct
     public void init() {
-        facesContext = FacesContext.getCurrentInstance();
+        //facesContext = FacesContext.getCurrentInstance();
         repoProducto = FactoriaRepositorios.getRepositorio(Producto.class);
         servicioProducto = FactoriaServicios.getServicio(IServiciosProductos.class);
         cargarTodos();
@@ -49,17 +50,18 @@ public class BusquedaBean implements Serializable {
         try {
             productos = repoProducto.getAll();
         } catch (RepositorioException e) {
-            if (facesContext != null) {
-                facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Error cargando productos: " + e.getMessage()));
-            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Error cargando productos: " + e.getMessage()));
+            //if (facesContext != null) {
+            //    facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Error cargando productos: " + e.getMessage()));
+            //}
         }
     }
 
     public void buscar() {
         try {
-            if ((filtroDescripcion == null || filtroDescripcion.isBlank())
-                    && (filtroMaxPrecio == null || filtroMaxPrecio.isNaN())
-                    && (filtroIdCategoria == null || filtroIdCategoria.isBlank())
+            if ((filtroDescripcion == null )
+                    && (filtroMaxPrecio == null)
+                    && (filtroIdCategoria == null)
                     && (filtroEstado == null)) {
                 cargarTodos();
                 return;
@@ -67,15 +69,17 @@ public class BusquedaBean implements Serializable {
 
             productos = servicioProducto.buscarProductos(filtroIdCategoria, filtroDescripcion, filtroEstado, filtroMaxPrecio);
             if (productos == null || productos.isEmpty()) {
-                facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "No se encontraron productos para los criterios indicados"));
+                //dejamos la tabla vacia
+                productos = List.of();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "No se encontraron productos para los criterios indicados"));
             }
 
         } catch (EntidadNoEncontrada e) {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "", "Categoría no encontrada: " + e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "", "Categoría no encontrada: " + e.getMessage()));
         } catch (RepositorioException e) {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Error de repositorio: " + e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Error de repositorio: " + e.getMessage()));
         } catch (IllegalArgumentException e) {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", e.getMessage()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", e.getMessage()));
         }
     }
 
