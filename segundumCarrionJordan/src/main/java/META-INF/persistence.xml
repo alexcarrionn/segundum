@@ -25,7 +25,6 @@
                 value="false" />
             <property name="eclipselink.cache.size.default" value="0" />
             <property name="eclipselink.refresh" value="true" />
-			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
             </properties>
     </persistence-unit>
 </persistence>

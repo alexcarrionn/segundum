@@ -32,7 +32,6 @@ public class LoginBean implements Serializable{
         try{
             Usuario usuario = servicioUsuarios.iniciarSesion(email, password);
             controlAccesoBean.setUsuarioLogueado(usuario);
-            // Redirección tras login correcto (barra correcta sin backslash de escape)
             return "/index.xhtml?faces-redirect=true";
         } catch (Exception e) {
             facesContext.addMessage(null,

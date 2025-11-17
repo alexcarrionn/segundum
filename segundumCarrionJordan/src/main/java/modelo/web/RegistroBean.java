@@ -19,7 +19,7 @@ public class RegistroBean implements Serializable{
     private String nombre; 
     private String apellidos;
     private String telefono;
-    private LocalDate fechaNacimiento;
+    private String fechaNacimiento;
     private String email; 
     private String password;
     private boolean admin;
@@ -34,7 +34,8 @@ public class RegistroBean implements Serializable{
 
     public String registrar(){
         try{
-            servicioUsuarios.registrarUsuario(nombre, apellidos, email, password, fechaNacimiento, telefono, admin);
+            LocalDate fechaNacimientoLocalDate = LocalDate.parse(fechaNacimiento);
+            servicioUsuarios.registrarUsuario(nombre, apellidos, email, password, fechaNacimientoLocalDate, telefono, admin);
             facesContext.addMessage(null,
                 new FacesMessage("Usuario registrado correctamente"));
             return "/usuario/login.xhtml?faces-redirect=true";
@@ -52,8 +53,8 @@ public class RegistroBean implements Serializable{
     public void setApellidos(String apellidos) { this.apellidos = apellidos; }
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
-    public LocalDate getFechaNacimiento() { return fechaNacimiento; }
-    public void setFechaNacimiento(LocalDate fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
+    public String getFechaNacimiento() { return fechaNacimiento; }
+    public void setFechaNacimiento(String fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public String getPassword() { return password; }

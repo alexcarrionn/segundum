@@ -13,6 +13,7 @@ import modelo.Usuario;
 public class ControlAccesoBean implements Serializable{
 
     private Usuario usuarioLogueado; 
+    
     @Inject
     private FacesContext facesContext;
 
@@ -29,8 +30,8 @@ public class ControlAccesoBean implements Serializable{
     }
 
     public String logout() {
-        facesContext.getExternalContext().invalidateSession();
         this.usuarioLogueado = null;
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "/index.xhtml?faces-redirect=true";
     }
 
