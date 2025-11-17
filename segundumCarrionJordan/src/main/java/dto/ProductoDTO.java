@@ -14,12 +14,17 @@ public class ProductoDTO implements Serializable {
 	private double precio;
 	private EstadoProducto estado;
 	private LocalDateTime fechaPublicacion;
-	private Categoria categoria; 
+	// private Categoria categoria; //Se cambia para evitar LazyInitializationException
 	private int visualizaciones;
 	private boolean envioDisponible;
     private LugarRecogida lugarRecogida;
-	private Usuario vendedor; 
-
+	//private Usuario vendedor; //Se cambia para evitar LazyInitializationException
+    
+    //Se añaden los siguientes campos para evitar LazyInitializationException
+    private String nombreCategoria;
+    private String nombreVendedor;
+    
+    /* CAMBIAMOS EL CONSTRUCTOR PARA INICIALIZAR LOS NUEVOS CAMPOS Y EVITAR LazyInitializationException 
    	public ProductoDTO(String id,String titulo, String descripcion, double precio, EstadoProducto estado, LocalDateTime fechaPublicacion,
 			Categoria categoria, int visualizaciones, boolean envioDisponible, LugarRecogida lugarRecogida,
 			Usuario vendedor) {
@@ -35,7 +40,22 @@ public class ProductoDTO implements Serializable {
 		this.lugarRecogida = lugarRecogida;
 		this.vendedor = vendedor;
 	}
-
+	*/
+	public ProductoDTO(String id, String titulo, String descripcion, double precio, EstadoProducto estado,
+			LocalDateTime fechaPublicacion, int visualizaciones, boolean envioDisponible,
+			modelo.LugarRecogida lugarRecogida, String nombreCategoria, String nombreVendedor) {
+		this.id = id;
+		this.titulo = titulo;
+		this.descripcion = descripcion;
+		this.precio = precio;
+		this.estado = estado;
+		this.fechaPublicacion = fechaPublicacion;
+		this.visualizaciones = visualizaciones;
+		this.envioDisponible = envioDisponible;
+		this.lugarRecogida = lugarRecogida;
+		this.nombreCategoria = nombreCategoria;
+		this.nombreVendedor = nombreVendedor;
+	}
     	public String getId() {
 		return id;
 	}
@@ -84,13 +104,13 @@ public class ProductoDTO implements Serializable {
 		this.fechaPublicacion = fechaPublicacion;
 	}
 
-	public Categoria getCategoria() {
+	/*public Categoria getCategoria() {
 		return categoria;
 	}
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
-	}
+	}*/
 
 	public int getVisualizaciones() {
 		return visualizaciones;
@@ -116,12 +136,26 @@ public class ProductoDTO implements Serializable {
 		this.lugarRecogida = lugarRecogida;
 	}
 
-	public Usuario getVendedor() {
+	/*public Usuario getVendedor() {
 		return vendedor;
 	}
 
 	public void setVendedor(Usuario vendedor) {
 		this.vendedor = vendedor;
-	}
+	}*/
+	
+	public String getNombreCategoria() {
+        return nombreCategoria;
+    }
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
+    }
+
+    public String getNombreVendedor() {
+        return nombreVendedor;
+    }
+    public void setNombreVendedor(String nombreVendedor) {
+        this.nombreVendedor = nombreVendedor;
+    }
 	
 }

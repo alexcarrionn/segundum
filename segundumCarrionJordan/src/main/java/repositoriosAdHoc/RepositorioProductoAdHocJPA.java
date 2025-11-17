@@ -108,7 +108,34 @@ public class RepositorioProductoAdHocJPA extends RepositorioProductosJPA impleme
 			EntityManagerHelper.closeEntityManager();
 		}
 	}
-
+	
+	/**
+	 * Busca productos por el ID del vendedor, ordenados por fecha de publicación DESC.
+	 */
+	@Override
+	public List<Producto> findProductosByVendedorId(String idVendedor) throws RepositorioException {
+		EntityManager em = null;
+		try {
+			em = EntityManagerHelper.getEntityManager();
+			
+			// Consulta JPQL que busca productos filtrando por el ID del campo 'vendedor'
+			final String queryString = "SELECT p FROM Producto p " +
+									 "WHERE p.vendedor.id = :idVendedor " +
+									 "ORDER BY p.fechaPublicacion DESC"; 
+									 
+			TypedQuery<Producto> query = em.createQuery(queryString, Producto.class);
+			query.setParameter("idVendedor", idVendedor);
+			
+			return query.getResultList();
+			
+		} catch (Exception e) {
+			// Captura cualquier excepción de persistencia y la envuelve en nuestra excepción
+			throw new RepositorioException("Error al buscar productos para el vendedor con ID: " + idVendedor, e);
+		} finally {
+			// Asegura que el EntityManager se cierra
+			EntityManagerHelper.closeEntityManager();
+		}
+	}
 	// --- MÉTODOS AUXILIARES ---
 	
 	/**

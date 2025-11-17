@@ -22,4 +22,8 @@ public interface RepositorioProductoAdHoc {
 	 */
 	List<Producto> findProductosByMonthAndYearOrderedByVisualizaciones(int mes, int ano)
             throws RepositorioException;
+	/**
+	 * Busca productos por el ID del vendedor, ordenados por fecha de publicación descendente.
+	 */
+	List<Producto> findProductosByVendedorId(String idVendedor) throws RepositorioException;
 }

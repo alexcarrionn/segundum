@@ -39,5 +39,12 @@ public interface IServiciosProductos {
 	                    throws RepositorioException, EntidadNoEncontrada;
 
 	ProductoDTO getProductoDTO(String idProducto) throws EntidadNoEncontrada, RepositorioException; 
+	
+	/*
+	 Recupera un listado de productos (como DTOs) puestos a la venta por un vendedor específico.
+	 * Requerido por la Práctica 2.
+	 */
+	List<ProductoDTO> getProductosPorVendedor(String idVendedor) 
+			throws RepositorioException, IllegalArgumentException;
 
 }

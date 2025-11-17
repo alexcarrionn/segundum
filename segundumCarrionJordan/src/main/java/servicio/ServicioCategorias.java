@@ -103,4 +103,10 @@ public class ServicioCategorias implements IServiciosCategorias {
 	    }
 	}
 	
+	@Override
+	public List<Categoria> obtenerTodasLasCategorias() throws RepositorioException {
+		// El repositorio genérico ya tiene un método getAll()
+		return repositorioCategoria.getAll();
+	}
+	
 }

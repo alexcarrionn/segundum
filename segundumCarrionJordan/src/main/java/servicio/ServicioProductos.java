@@ -166,8 +166,63 @@ public class ServicioProductos implements IServiciosProductos {
 			
 			return transformToDTO(repositorioProducto.getById(idProducto));
 	}
-	
+	/*
 	private ProductoDTO transformToDTO(Producto producto) {        
 		ProductoDTO encuestaDTO = new ProductoDTO(producto.getId(),producto.getTitulo(), producto.getDescripcion(), producto.getPrecio(), producto.getEstado(), producto.getFechaPublicacion(),producto.getCategoria(), producto.getVisualizaciones(), producto.isEnvioDisponible(), producto.getLugarRecogida(), producto.getVendedor());
 	        return encuestaDTO;    }
+	*/
+	
+	/* Nuevo metodo para transformar Producto a ProductoDTO evitando LazyException */
+	private ProductoDTO transformToDTO(Producto producto) {
+	    // Comprobar la nulidad de los objetos LAZY antes de acceder a sus métodos.
+	    String catNombre = (producto.getCategoria() != null) ? producto.getCategoria().getNombre() : null;
+	    String vendNombre = (producto.getVendedor() != null) ? producto.getVendedor().getNombre() : null;
+
+	    // Usamos el constructor NUEVO del DTO
+	    ProductoDTO productoDTO = new ProductoDTO(
+	        producto.getId(),
+	        producto.getTitulo(),
+	        producto.getDescripcion(),
+	        producto.getPrecio(),
+	        producto.getEstado(),
+	        producto.getFechaPublicacion(),
+	        producto.getVisualizaciones(),
+	        producto.isEnvioDisponible(),
+	        producto.getLugarRecogida(), 
+	        catNombre, 
+	        vendNombre   
+	    );
+	    
+	    return productoDTO;
+	}
+	@Override
+	public List<ProductoDTO> getProductosPorVendedor(String idVendedor) 
+			throws RepositorioException, IllegalArgumentException {
+		
+		// 1. Validación de entrada
+		if (idVendedor == null || idVendedor.trim().isEmpty()) {
+			throw new IllegalArgumentException("El ID del vendedor no puede ser nulo o vacío.");
+		}
+		
+		// 2. Obtener el repositorio AdHoc (como se hace en 'buscarProductos')
+		RepositorioProductoAdHoc repoAdHoc = FactoriaRepositorios.getRepositorio(RepositorioProductoAdHoc.class);
+		
+		// 3. Llamar al nuevo método del repositorio para obtener las entidades
+		List<Producto> productosDelVendedor = repoAdHoc.findProductosByVendedorId(idVendedor);
+		
+		// 4. Transformar la lista de Entidades (Producto) a una lista de DTOs (ProductoDTO)
+		List<ProductoDTO> productosDTO = new ArrayList<>();
+		for (Producto p : productosDelVendedor) {
+			productosDTO.add(transformToDTO(p)); // Reutilizamos el método que ya tienes
+		}
+		
+		// 5. Devolver la lista de DTOs
+		return productosDTO;
+		
+		/* // Forma alternativa usando Streams (más moderna, funcionalmente idéntica)
+		return productosDelVendedor.stream()
+								 .map(this::transformToDTO)
+								 .collect(Collectors.toList());
+		*/
+	}
 }

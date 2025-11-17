@@ -21,7 +21,7 @@
 			<!-- Nav (oculta login/registro si hay usuario logueado) -->
 			<nav id="nav">
 			<ul>
-				<ui:fragment rendered="#{empty controlAccesoBean.usuarioLogueado}">
+				<ui:fragment rendered="#{empty controlAccesoBean.logged}">
 					<li class="#{estilo3}"><a class="button" role="button"
 						href="#{request.contextPath}/usuario/login.xhtml">Iniciar Sesión</a></li>
 					<li class="#{estilo3}"><a class="button" role="button"
