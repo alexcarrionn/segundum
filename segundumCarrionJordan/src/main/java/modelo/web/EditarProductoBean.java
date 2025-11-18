@@ -17,7 +17,7 @@ import servicio.FactoriaServicios;
 public class EditarProductoBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    private String origen;
     @Inject
     private ControlAccesoBean controlAccesoBean; 
 
@@ -85,9 +85,14 @@ public class EditarProductoBean implements Serializable {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, 
                 "Éxito", "Producto '" + producto.getTitulo() + "' actualizado correctamente."));
             
-            // Navegamos de vuelta al listado
-            return "mis-productos?faces-redirect=true";
-
+            // --- LÓGICA DE RETORNO INTELIGENTE ---
+            if ("index".equals(origen)) {
+                return "/index?faces-redirect=true";
+            } else {
+                // Por defecto vuelve a "Mis Productos"
+                return "/usuario/mis-productos?faces-redirect=true";
+            }
+            
         } catch (Exception e) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, 
                 "Error al guardar", "No se pudieron guardar los cambios: " + e.getMessage()));
@@ -140,5 +145,13 @@ public class EditarProductoBean implements Serializable {
     }
     public void setNuevaDescripcion(String nuevaDescripcion) {
         this.nuevaDescripcion = nuevaDescripcion;
+    }
+    
+    public String getOrigen() {
+		return origen;
+	}
+    
+    public void setOrigen(String origen) {
+    	this.origen = origen;		
     }
 }

@@ -32,6 +32,14 @@ public class LoginBean implements Serializable{
         try{
             Usuario usuario = servicioUsuarios.iniciarSesion(email, password);
             controlAccesoBean.setUsuarioLogueado(usuario);
+            if (usuario == null) {
+                facesContext.addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario o contraseña incorrectos."));
+                return null; 
+            }
+
+            controlAccesoBean.setUsuarioLogueado(usuario);
+            
             return "/index.xhtml?faces-redirect=true";
         } catch (Exception e) {
             facesContext.addMessage(null,

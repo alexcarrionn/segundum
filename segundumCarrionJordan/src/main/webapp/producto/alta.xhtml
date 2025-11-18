@@ -50,15 +50,22 @@
 
                 </p:panelGrid>
 
-                <p:toolbar>
-                     <p:toolbarGroup>
-                        <p:commandButton value="Crear Producto" 
-                                         icon="pi pi-check-circle"
-                                         actionListener="#{crearProductoBean.crearProducto}"
-                                         update="formCrear growl panelDialogo" 
-                                         oncomplete="if (!args.validationFailed) PF('dialogResultado').show()" />
-                    </p:toolbarGroup>
-                </p:toolbar>
+				<p:toolbar>
+				                     <p:toolbarGroup>
+				                        <p:commandButton value="Crear Producto" 
+				                                         icon="pi pi-check-circle"
+				                                         actionListener="#{crearProductoBean.crearProducto}"
+				                                         update="formCrear growl panelDialogo" 
+				                                         oncomplete="if (!args.validationFailed) PF('dialogResultado').show()" />
+				                    </p:toolbarGroup>
+
+									<p:toolbarGroup align="right">
+									        <p:button value="Cancelar" icon="pi pi-times"
+									                  outcome="/index" 
+									                  styleClass="ui-button-danger" 
+									                  style="margin-right: .5rem"/>
+									</p:toolbarGroup>
+				 </p:toolbar>
             </p:panel>
             
             <p:growl id="growl" showDetail="true" />

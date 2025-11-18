@@ -8,102 +8,87 @@
 	<ui:param name="estilo1" value="current" />
 
 	<ui:define name="content">
+		
+		<style>
+			/* (Tus estilos CSS se quedan igual, no los toco) */
+			.feature-actions { display:flex; flex-wrap:wrap; justify-content:center; gap:1.5rem; margin-top:2.5rem; }
+			.feature-button { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1.5rem; border:2px solid; border-radius:8px; background:#fff; cursor:pointer; transition:all .2s ease-in-out; width: 240px; text-decoration:none; color:#444; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+			.feature-button:hover { transform:translateY(-5px); box-shadow:0 10px 20px rgba(0,0,0,0.1); color:#000; border-color: #555; }
+			.feature-icon { font-size:2.5rem; margin-bottom:1rem; }
+			.feature-title { font-weight:700; font-size:1.1rem; text-align: center; }
+			.feature-button.search:hover { border-color:#0d6efd; color: #0d6efd; }
+			.feature-button.search .feature-icon { color:#0d6efd; }
+			.feature-button.create:hover { border-color:#d52349; color: #d52349; }
+			.feature-button.create .feature-icon { color:#d52349; }
+			.feature-button.manage:hover { border-color:#20c997; color: #20c997; }
+			.feature-button.manage .feature-icon { color:#20c997; }
+			.feature-button.login { border-color:#6c757d; }
+			.feature-button.login .feature-icon { color:#6c757d; }
+		</style>
+
 		<h:panelGroup layout="block" style="text-align:center; padding:2rem;">
-			<h1>Bienvenido a Segundum</h1>
-			<h:panelGroup rendered="#{ controlAccesoBean.usuarioLogueado == false}">
-				<p style="margin-top:1rem; font-size:1.1rem;">Compra y comparte productos de segunda mano de forma sencilla.</p>
-
-			</h:panelGroup>
-			<h:panelGroup rendered="#{controlAccesoBean.usuarioLogueado != false}">
-				<p style="margin-top:1rem; font-size:1.1rem;">Hola,
-					<strong>#{controlAccesoBean.usuarioLogueado}</strong>.
-					¡Gracias por volver! Explora los productos o publica uno nuevo.
+			
+			<h1 style="font-size: 3rem; margin-bottom: 1rem;">Bienvenido a Segundum</h1>
+					
+			<h:panelGroup rendered="#{!controlAccesoBean.isUsuarioLogueado()}">
+				<p style="font-size:1.3rem; color: #666;">
+					Compra y comparte productos de segunda mano de forma sencilla.
 				</p>
-				<div style="margin-top:2rem;">
-					<h:link outcome="/producto/alta.xhtml" styleClass="button" value="Publicar Producto" />
-					<span style="margin:0 .75rem;"></span>
+				</h:panelGroup>
 
-				</div>
-
+			<h:panelGroup rendered="#{controlAccesoBean.isUsuarioLogueado()}">
+				<p style="font-size:1.3rem; color: #666;">
+					Hola, 
+					<strong>#{controlAccesoBean.getUsuarioLogueado().nombre}</strong>.
+					¡Gracias por volver!
+				</p>
+				<p>¿Qué quieres hacer hoy?</p>
 			</h:panelGroup>
 
-			<!-- Acciones principales (custom layout) -->
-			<style>
-				.feature-actions { display:flex; 
-								flex-wrap:wrap; 
-								justify-content:center; 
-								gap:1rem; 
-								margin-top:2.5rem; }
-				.feature-button { display:flex; 
-								flex-direction:column; 
-								align-items:center; 
-								justify-content:center; 
-								padding:1.25rem 1.75rem; 
-								border:2px solid; 
-								border-radius:0.5rem; 
-								background:#fff; 
-								cursor:pointer; 
-								transition:all .2s; 
-								min-width:220px; 
-								min-height:120px; 
-								text-decoration:none; 
-								color:#000; }
-				.feature-button:hover, .feature-button:focus, .feature-button:active { transform:translateY(-2px); 
-																						box-shadow:0 4px 10px rgba(0,0,0,.12); 
-																						color:#000; }
-				.feature-icon { font-size:2rem; 
-								margin-bottom:.5rem; }
-				.feature-title { font-weight:700; 
-								font-size:1.00rem; 
-								color:#000; }
-				/* Variantes de color */
-				.feature-button.search { border-color:#0d6efd; }
-				.feature-button.search .feature-icon { color:#0d6efd; }
-				.feature-button.create { border-color:#d52349; }
-				.feature-button.create .feature-icon { color:#d52349; }
-				.feature-button.mine { border-color:#20c997;  }
-				.feature-button.mine .feature-icon { color:#20c997; }
-				.feature-button.edit { border-color:#ffc107; }
-				.feature-button.edit .feature-icon { color:#ffc107; }
-			</style>
 
 			<div class="feature-actions">
-				<h:outputLink value="#{request.contextPath}/producto/buscar.xhtml" styleClass="feature-button search" title="Buscar productos" role="button" tabindex="0">
+				
+				<h:link outcome="/producto/buscar" styleClass="feature-button search" title="Buscar chollos">
 					<i class="pi pi-search feature-icon"></i>
-					<div class="feature-title">Buscar productos</div>
-				</h:outputLink>
+					<div class="feature-title">Buscar Productos</div>
+				</h:link>
 
-				<h:outputLink value="#{request.contextPath}/producto/alta.xhtml" styleClass="feature-button create" title="Crear producto" role="button" tabindex="0">
-					<i class="pi pi-plus feature-icon"></i>
-					<div class="feature-title">Crear producto</div>
-				</h:outputLink>
+				<ui:fragment rendered="#{controlAccesoBean.isUsuarioLogueado()}">
+					
+					<h:link outcome="/producto/alta" styleClass="feature-button create" title="Vender algo">
+						<i class="pi pi-plus-circle feature-icon"></i>
+						<div class="feature-title">Vender Producto</div>
+					</h:link>
 
-				<h:outputLink value="#{request.contextPath}/usuario/mis-productos.xhtml" styleClass="feature-button mine" title="Mis productos" role="button" tabindex="0">
-					<i class="pi pi-list feature-icon"></i>
-					<div class="feature-title">Mis productos</div>
-				</h:outputLink>
-
-				<h:outputLink value="#{request.contextPath}/producto/gestionar.xhtml" styleClass="feature-button edit" title="Editar mis productos" role="button" tabindex="0">
-					<i class="pi pi-pencil feature-icon"></i>
-					<div class="feature-title">Editar mis productos</div>
-				</h:outputLink>
+					<h:link outcome="/usuario/mis-productos" styleClass="feature-button manage" title="Ver mi inventario">
+						<i class="pi pi-box feature-icon"></i> 
+						<div class="feature-title">Gestionar Mis Productos</div>
+					</h:link>
+					
+				</ui:fragment>
 			</div>
+			
 		</h:panelGroup>
 
-		<div class="features" style="display:flex; flex-wrap:wrap; justify-content:center; gap:1.5rem; margin-top:3rem;">
-			<div style="flex:1 1 280px; max-width:320px; border:1px solid #ddd; padding:1.25rem; border-radius:8px;">
+		<p:separator style="margin-top: 3rem; margin-bottom: 3rem; opacity: 0.3;"/>
+		
+		<div class="features" style="display:flex; flex-wrap:wrap; justify-content:center; gap:2rem; padding-bottom: 2rem;">
+			<div style="flex:1 1 250px; max-width:300px; text-align: center;">
+				<i class="pi pi-shield" style="font-size: 2rem; color: #20c997; margin-bottom: 1rem;"></i>
 				<h3>Seguridad</h3>
-				<p>Publica con confianza y mantén el control de tus productos.</p>
+				<p style="color: #777;">Publica con confianza. Solo usuarios registrados de la UMU pueden vender.</p>
 			</div>
-			<div style="flex:1 1 280px; max-width:320px; border:1px solid #ddd; padding:1.25rem; border-radius:8px;">
+			<div style="flex:1 1 250px; max-width:300px; text-align: center;">
+				<i class="pi pi-bolt" style="font-size: 2rem; color: #ffc107; margin-bottom: 1rem;"></i>
 				<h3>Rapidez</h3>
-				<p>Encuentra lo que buscas con una interfaz sencilla.</p>
+				<p style="color: #777;">Encuentra lo que buscas al instante con nuestros filtros avanzados.</p>
 			</div>
-			<div style="flex:1 1 280px; max-width:320px; border:1px solid #ddd; padding:1.25rem; border-radius:8px;">
+			<div style="flex:1 1 250px; max-width:300px; text-align: center;">
+				<i class="pi pi-users" style="font-size: 2rem; color: #0d6efd; margin-bottom: 1rem;"></i>
 				<h3>Comunidad</h3>
-				<p>Conecta con otros usuarios y da una segunda vida a los objetos.</p>
+				<p style="color: #777;">Conecta con otros compañeros y fomenta la economía circular.</p>
 			</div>
 		</div>
+		
 	</ui:define>
-
 </ui:composition>

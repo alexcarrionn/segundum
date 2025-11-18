@@ -12,6 +12,7 @@
     <f:metadata>
         <f:viewParam name="id" value="#{editarProductoBean.idProducto}" required="true"
                      requiredMessage="Se necesita un ID de producto para editar."/>
+		<f:viewParam name="origen" value="#{editarProductoBean.origen}" />
         <f:viewAction action="#{editarProductoBean.load()}" />
     </f:metadata>
 
@@ -53,7 +54,8 @@
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
 						<p:button value="Cancelar" icon="pi pi-times"
-						          outcome="/usuario/mis-productos" styleClass="ui-button-secondary"/>
+						              outcome="#{editarProductoBean.origen eq 'index' ? '/index' : '/usuario/mis-productos'}" 
+						              styleClass="ui-button-secondary"/>
                     </p:toolbarGroup>
                 </p:toolbar>
                 

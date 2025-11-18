@@ -18,6 +18,18 @@
             </p:messages>
 
             <h:form id="formMisProductos">
+				
+				<p:toolbar style="margin-bottom: 1rem;">
+				                    <p:toolbarGroup>
+				                        <p:button value="Volver al Inicio" icon="pi pi-home" 
+				                                  outcome="/index" styleClass="ui-button-secondary"/>
+				                    </p:toolbarGroup>
+				                    
+				                    <p:toolbarGroup align="right">
+				                        <p:button value="Vender nuevo producto" icon="pi pi-plus" 
+				                                  outcome="/producto/alta" />
+				                    </p:toolbarGroup>
+				                </p:toolbar>
                 
                 <p:dataTable id="tablaProductos"
                              var="p" 
@@ -55,7 +67,9 @@
                     
 					<p:column headerText="Acciones" style="width:100px; text-align: center">
 					    <p:button icon="pi pi-pencil" title="Editar"
-					              outcome="/producto/gestionar" > <f:param name="id" value="#{p.id}" />
+					              outcome="/producto/gestionar" >
+					        <f:param name="id" value="#{p.id}" />
+					        <f:param name="origen" value="misproductos" />
 					    </p:button>
 					</p:column>
 
