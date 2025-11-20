@@ -17,119 +17,177 @@
             </p>
         </h:panelGroup>
 
-        <div class="card" style="max-width:1100px; margin:0 auto;">
+		<div class="card" style="max-width:1100px; margin:0 auto;">
 
-            <h5 class="mt-0">Búsqueda de un Producto</h5>
-            <!-- Filtros y resultados en un único formulario -->
-            <h:form id="form">
-                <!-- INPUT BUSQUEDA DESCRIPCIÓN -->
-                <p:inputText id="descripcion"
-                             value="#{busquedaBean.filtroDescripcion}"
-                             placeholder="Buscar descripción del producto..."
-                             style="width:100%;" />
+		            <h5 class="mt-0">Búsqueda de un Producto</h5>
+		            
+		            <h:form id="form">
+		                <p:inputText id="descripcion"
+		                             value="#{busquedaBean.filtroDescripcion}"
+		                             placeholder="Buscar descripción del producto..."
+		                             style="width:100%;" />
 
-                <h5 class="mt-0">Inserte el precio máximo del producto a buscar</h5>
+		                <h5 class="mt-0">Inserte el precio máximo del producto a buscar</h5>
 
-                <div class="grid ui-fluid">
-                    <div class="col-12">
-                        <div class="ui-inputgroup" style="max-width:250px;">
-                            <p:inputNumber id="maxPrecio" value="#{busquedaBean.filtroMaxPrecio}" placeholder="Precio máximo..." mode="decimal" decimalPlaces="2" locale="es"/>
-                            <div class="ui-inputgroup-addon">€</div>
-                        </div>
-                    </div>
-                </div>
+		                <div class="grid ui-fluid">
+		                    <div class="col-12">
+		                        <div class="ui-inputgroup" style="max-width:250px;">
+		                            <p:inputNumber id="maxPrecio" value="#{busquedaBean.filtroMaxPrecio}" placeholder="Precio máximo..." mode="decimal" decimalPlaces="2" locale="es"/>
+		                            <div class="ui-inputgroup-addon">€</div>
+		                        </div>
+		                    </div>
+		                </div>
 
-                <!-- SELECT ESTADO PRODUCTO -->
-                <div class="ui-fluid formgrid grid">
-                    <div class="field col-12 md:col-4">
-                        <h5 class="mt-0">Seleccione el estado del producto</h5>
-                        <p:selectOneMenu id="estado" value="#{busquedaBean.filtroEstado}" style="width: 100%">
-                            <f:selectItem itemLabel="Seleccione uno" itemValue=""/>
-                            <f:selectItem itemLabel="Nuevo" itemValue="NUEVO"/>
-                            <f:selectItem itemLabel="Como nuevo" itemValue="COMO_NUEVO"/>
-                            <f:selectItem itemLabel="Buen estado" itemValue="BUEN_ESTADO"/>
-                            <f:selectItem itemLabel="Aceptable" itemValue="ACEPTABLE"/>
-                            <f:selectItem itemLabel="Para reparar" itemValue="PARA_REPARAR"/>
-                        </p:selectOneMenu>
-                    </div>
-                </div>
+		                <div class="ui-fluid formgrid grid">
+		                    <div class="field col-12 md:col-4">
+		                        <h5 class="mt-0">Seleccione el estado del producto</h5>
+		                        <p:selectOneMenu id="estado" value="#{busquedaBean.filtroEstado}" style="width: 100%">
+		                            <f:selectItem itemLabel="Seleccione uno" itemValue=""/>
+		                            <f:selectItem itemLabel="Nuevo" itemValue="NUEVO"/>
+		                            <f:selectItem itemLabel="Como nuevo" itemValue="COMO_NUEVO"/>
+		                            <f:selectItem itemLabel="Buen estado" itemValue="BUEN_ESTADO"/>
+		                            <f:selectItem itemLabel="Aceptable" itemValue="ACEPTABLE"/>
+		                            <f:selectItem itemLabel="Para reparar" itemValue="PARA_REPARAR"/>
+		                        </p:selectOneMenu>
+		                    </div>
+		                </div>
 
-                <div class="ui-fluid formgrid grid">
-                    <h5 class="mt-0">Seleccione el nombre de la Categoría a la que pertenece el producto</h5>
-                    <p:inputText id="categoria"
-                                 value="#{busquedaBean.filtroIdCategoria}"
-                                 placeholder="Buscar categoría del producto..."
-                                 style="width:100%;" />
-                </div>
+		                <div class="ui-fluid formgrid grid">
+		                    <h5 class="mt-0">Seleccione el nombre de la Categoría</h5>
+		                    <p:inputText id="categoria"
+		                                 value="#{busquedaBean.filtroIdCategoria}"
+		                                 placeholder="Buscar categoría del producto..."
+		                                 style="width:100%;" />
+		                </div>
 
-                <!-- Botón buscar -->
-               <div style = "text-align: center; margin-bottom: 1rem;">
-                    <p:commandButton value="Buscar" 
-                                    action="#{busquedaBean.buscar}" 
-                                    update="basicDT" 
-                                    process="@form" /> 
-                </div>
+		                <div style = "text-align: center; margin-bottom: 1rem;">
+		                    <p:commandButton value="Buscar" 
+		                                    action="#{busquedaBean.buscar}" 
+		                                    update="basicDT" 
+		                                    process="@form" /> 
+		                </div>
 
-            <h5>Listado de productos disponibles en nuestra tienda</h5>
+		            <h5>Listado de productos disponibles</h5>
 
-            <p:dataTable id="basicDT" var="prod"
-                         value="#{busquedaBean.productos}"
-                         selectionMode="single"
-                         selection="#{busquedaBean.seleccionado}"
-                         rowKey="#{prod.id}">
+		            <p:dataTable id="basicDT" var="prod"
+		                         value="#{busquedaBean.productos}"
+		                         paginator="true" rows="10" paginatorPosition="bottom">
+		                         <p:column headerText="ID" style="width:120px">
+		                    <h:outputText value="#{prod.id}" />
+		                </p:column>
 
-                <p:ajax event="rowSelect"
-                        update=":form:detalle"
-                        listener="#{busquedaBean.onRowSelect}" />
+		                <p:column headerText="Título">
+		                    <h:outputText value="#{prod.titulo}" />
+		                </p:column>
 
-                <p:column headerText="ID" style="width:120px">
-                    <h:outputText value="#{prod.id}" />
-                </p:column>
+		                <p:column headerText="Categoría">
+		                    <h:outputText value="#{prod.categoria.nombre}" />
+		                </p:column>
 
-                <p:column headerText="Título">
-                    <h:outputText value="#{prod.titulo}" />
-                </p:column>
+		                <p:column headerText="Descripción">
+		                    <h:outputText value="#{prod.descripcion}" />
+		                </p:column>
 
-                <p:column headerText="Categoría">
-                    <h:outputText value="#{prod.categoria.nombre}" />
-                </p:column>
+		                <p:column headerText="Precio">
+		                    <h:outputText value="#{prod.precio}">
+		                        <f:convertNumber type="currency" currencySymbol="€" locale="es_ES"/>
+		                    </h:outputText>
+		                </p:column>
 
-                <p:column headerText="Descripción">
-                    <h:outputText value="#{prod.descripcion}" />
-                </p:column>
+		                <p:column headerText="Estado">
+		                    <h:outputText value="#{prod.estado}" />
+		                </p:column>
+		                
+						<p:column style="width:4rem; text-align: center" headerText="Ficha">
+						                    <p:commandButton icon="pi pi-search" 
+						                                     title="Ver Detalle"
+						                                     actionListener="#{busquedaBean.verDetalle(prod.id)}"
+						                                     update=":form:dialogoDetallePanel"
+						                                     oncomplete="PF('dlgFicha').show()"
+						                                     styleClass="rounded-button ui-button-info" />
+						</p:column>
 
-                <p:column headerText="Precio">
-                    <h:outputText value="#{prod.precio}" />
-                </p:column>
+		            </p:dataTable>
 
-                <p:column headerText="Estado">
-                    <h:outputText value="#{prod.estado}" />
-                </p:column>
+					<p:dialog header="Ficha del Producto" widgetVar="dlgFicha" 
+					                      modal="true" 
+					                      showEffect="fade" hideEffect="fade" 
+					                      resizable="false" 
+					                      width="550" 
+					                      responsive="true"
+					                      blockScroll="true" 
+					                      contentStyle="max-height: 80vh; overflow: auto;"> 
+					                      <p:outputPanel id="dialogoDetallePanel">
+					                    
+					                    <p:card rendered="#{busquedaBean.productoDetalle != null}">
+					                        
+					                        <f:facet name="title">
+					                            #{busquedaBean.productoDetalle.titulo}
+					                        </f:facet>
+					                        
+					                        <f:facet name="subtitle">
+					                            <h:outputText value="#{busquedaBean.productoDetalle.precio}" style="font-size: 1.5rem; color: #20c997; font-weight: bold;">
+					                                <f:convertNumber type="currency" currencySymbol="€" locale="es_ES"/>
+					                            </h:outputText>
+					                        </f:facet>
 
-            </p:dataTable>
+					                        <p>
+					                            <strong>Descripción:</strong><br/>
+					                            #{busquedaBean.productoDetalle.descripcion}
+					                        </p>
+					                        
+					                        <p:divider />
+					                        
+					                        <div class="grid">
+					                            <div class="col-6">
+					                                <strong><i class="pi pi-tag"></i> Categoría:</strong><br/>
+					                                #{busquedaBean.productoDetalle.nombreCategoria}
+					                            </div>
+					                            <div class="col-6">
+					                                <strong><i class="pi pi-info-circle"></i> Estado:</strong><br/>
+					                                #{busquedaBean.productoDetalle.estado}
+					                            </div>
+					                            <div class="col-6" style="margin-top: 10px;">
+					                                <strong><i class="pi pi-user"></i> Vendedor:</strong><br/>
+					                                #{busquedaBean.productoDetalle.nombreVendedor}
+					                            </div>
+					                            <div class="col-6" style="margin-top: 10px;">
+					                                <strong><i class="pi pi-calendar"></i> Publicado:</strong><br/>
+					                                <h:outputText value="#{busquedaBean.productoDetalle.fechaPublicacion}">
+					                                     <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy" />
+					                                </h:outputText>
+					                            </div>
+					                            <div class="col-6" style="margin-top: 10px;">
+					                                <strong><i class="pi pi-eye"></i> Vistas:</strong><br/>
+					                                #{busquedaBean.productoDetalle.visualizaciones}
+					                            </div>
+					                        </div>
 
-            <!-- DETALLE PRODUCTO SELECCIONADO -->
-            <h:panelGroup id="detalle"
-                          layout="block"
-                          style="margin-top:1.5rem"
-                          rendered="#{not empty busquedaBean.seleccionado}">
+					                        <p:divider />
 
-                <h3>Detalle del producto seleccionado</h3>
+					                        <p>
+					                            <strong><i class="pi pi-truck"></i> Envío disponible: </strong>
+					                            <h:outputText value="SÍ" rendered="#{busquedaBean.productoDetalle.envioDisponible}" style="color:green; font-weight:bold"/>
+					                            <h:outputText value="NO" rendered="#{!busquedaBean.productoDetalle.envioDisponible}" style="color:red; font-weight:bold"/>
+					                        </p>
+					                        
+					                        <h:panelGroup rendered="#{busquedaBean.productoDetalle.lugarRecogida != null}">
+					                            <p>
+					                                <strong><i class="pi pi-map-marker"></i> Recogida en:</strong><br/>
+					                                #{busquedaBean.productoDetalle.lugarRecogida.descripcion}
+					                            </p>
+					                        </h:panelGroup>
 
-                <p><strong>Título:</strong> #{busquedaBean.seleccionado.titulo}</p>
-                <p><strong>Descripción:</strong> #{busquedaBean.seleccionado.descripcion}</p>
-                <p><strong>Precio:</strong> #{busquedaBean.seleccionado.precio}</p>
-                <p><strong>Estado:</strong> #{busquedaBean.seleccionado.estado}</p>
-                <p><strong>Visualizaciones:</strong> #{busquedaBean.seleccionado.visualizaciones}</p>
-                <p><strong>Fecha publicación:</strong> #{busquedaBean.seleccionado.fechaPublicacion}</p>
-                <p><strong>Vendedor:</strong> #{busquedaBean.seleccionado.vendedor.email}</p>
+					                    </p:card>
+					                </p:outputPanel>
 
-                <p rendered="#{not empty busquedaBean.seleccionado.categoria}">
-                    <strong>Categoría:</strong> #{busquedaBean.seleccionado.categoria.nombre}
-                </p>
+					                <f:facet name="footer">
+					                    <p:commandButton value="Cerrar" icon="pi pi-times" onclick="PF('dlgFicha').hide()"
+					                                     class="ui-button-secondary ui-button-flat" />
+					                </f:facet>
+					  </p:dialog>
 
-            </h:panelGroup>
-        </h:form>
-    </div>
+		        </h:form>
+		        </div>
     </ui:define>
 </ui:composition>

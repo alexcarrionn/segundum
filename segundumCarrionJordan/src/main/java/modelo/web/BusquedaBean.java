@@ -18,7 +18,7 @@ import repositorio.RepositorioException;
 import repositoriosModelo.IRepositorioProducto;
 import servicio.FactoriaServicios;
 import servicio.IServiciosProductos;
-
+import dto.ProductoDTO;
 
 @SuppressWarnings("serial")
 @Named("busquedaBean")
@@ -36,6 +36,7 @@ public class BusquedaBean implements Serializable {
     private Double filtroMaxPrecio;
     private EstadoProducto filtroEstado;
 
+    private ProductoDTO productoDetalle;
     //private FacesContext facesContext;
 
     @PostConstruct
@@ -86,6 +87,19 @@ public class BusquedaBean implements Serializable {
     public void onRowSelect(SelectEvent<Producto> event) {
         this.seleccionado = event.getObject();
     }
+    
+    public void verDetalle(String idProducto) {
+    	try {
+            servicioProducto.anadirVisualizacion(idProducto);
+            
+            this.productoDetalle = servicioProducto.getProductoDTO(idProducto);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null, 
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo cargar el detalle."));
+        }
+    }
 
     public List<Producto> getProductos() { return productos; }
     public void setProductos(List<Producto> productos) { this.productos = productos; }
@@ -100,4 +114,6 @@ public class BusquedaBean implements Serializable {
     public void setFiltroEstado(EstadoProducto filtroEstado) { this.filtroEstado = filtroEstado; }
     public String getFiltroIdCategoria() { return filtroIdCategoria; }
     public void setFiltroIdCategoria(String filtroIdCategoria) { this.filtroIdCategoria = filtroIdCategoria; }
+    public ProductoDTO getProductoDetalle() { return productoDetalle; }
+    public void setProductoDetalle(ProductoDTO productoDetalle) { this.productoDetalle = productoDetalle; }
 }
