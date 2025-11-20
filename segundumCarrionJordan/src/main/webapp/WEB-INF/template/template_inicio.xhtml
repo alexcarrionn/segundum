@@ -32,7 +32,9 @@
 								<li class="logout-item">
 									<h:form id="logoutForm">
 										<h:commandButton value="Cerrar Sesión (#{controlAccesoBean.getUsuarioLogueado().nombre})" 
-														 action="#{controlAccesoBean.logout}" styleClass="button" />
+										                 action="#{controlAccesoBean.logout}" 
+										                 styleClass="button"
+										                 style="background-color: #d52349 !important; color: #ffffff !important; border-color: #d52349 !important;" />
 									</h:form>
 								</li>
 							</ui:fragment>
