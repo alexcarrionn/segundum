@@ -28,7 +28,9 @@ public class CrearProductoBean implements Serializable {
     private EstadoProducto estado;
     private String idCategoria; // Guardará el ID de la categoría seleccionada
     private boolean envioDisponible = false; // Valor por defecto
-
+    private String descripcionLugarRecogida; // Nuevo campo para la descripción del lugar de recogida
+    private Double latitud;
+    private Double longitud;
     // --- Listas para los desplegables ---
     private List<Categoria> categoriasDisponibles;
     private EstadoProducto[] estadosDisponibles;
@@ -46,6 +48,7 @@ public class CrearProductoBean implements Serializable {
     // --- Para el diálogo de resultado (Semana 10) ---
     private boolean errorAlCrear = false;
     private String idProductoCreado;
+
 
     public CrearProductoBean() {
         // Obtenemos los servicios usando la factoría
@@ -102,6 +105,25 @@ public class CrearProductoBean implements Serializable {
         }
     }
 
+    /**
+     * Método llamado por el `p:remoteCommand` cuando el usuario hace click en el mapa.
+     * Recupera los parámetros `lat` y `lng` de la petición y los asigna a las propiedades.
+     */
+    public void onPointSelect() {
+        try {
+            javax.faces.context.FacesContext fc = javax.faces.context.FacesContext.getCurrentInstance();
+            java.util.Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
+            String lat = params.get("lat");
+            String lng = params.get("lng");
+            if (lat != null && lng != null) {
+                this.latitud = Double.valueOf(lat);
+                this.longitud = Double.valueOf(lng);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void limpiarFormulario() {
         this.titulo = null;
         this.descripcion = null;
@@ -149,5 +171,30 @@ public class CrearProductoBean implements Serializable {
 
     public String getIdProductoCreado() {
         return idProductoCreado;
+    }
+
+    public String getDescripcionLugarRecogida() {
+        return descripcionLugarRecogida;
+    }
+
+    public void setDescripcionLugarRecogida(String descripcionLugarRecogida) {
+        this.descripcionLugarRecogida = descripcionLugarRecogida;
+    }
+
+    // --- Getters / Setters para coordenadas ---
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
     }
 }
