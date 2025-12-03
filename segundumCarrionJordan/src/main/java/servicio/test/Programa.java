@@ -3,7 +3,7 @@ package servicio.test;
 import java.time.LocalDate;
 import java.util.List;
 
-
+import dto.ProductoDTO;
 import modelo.Categoria;
 import modelo.EstadoProducto; 
 import modelo.Producto; 
@@ -152,7 +152,7 @@ public class Programa {
 						System.out.println("\n[Prueba H6] Historial del Mes...");
 						int mesActual = LocalDate.now().getMonthValue();
 						int anoActual = LocalDate.now().getYear();
-						List<Producto> historial = servicioProductos.historialDelMes(mesActual, anoActual);
+						List<ProductoDTO> historial = servicioProductos.historialDelMes(mesActual, anoActual);
 						System.out.println("--> Historial obtenido para " + mesActual + "/" + anoActual + ". Productos: " + historial.size());
 						historial.forEach(p -> System.out.println("    - " + p.getTitulo() + " (ID: "+ p.getId() + ", Vis: " + p.getVisualizaciones() + ")"));
 

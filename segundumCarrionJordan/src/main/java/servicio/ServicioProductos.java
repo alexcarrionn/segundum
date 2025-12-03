@@ -108,13 +108,23 @@ public class ServicioProductos implements IServiciosProductos {
 	}
 
 	@Override
-	public List<Producto> historialDelMes(int mes, int ano) throws RepositorioException, IllegalArgumentException {
+	public List<ProductoDTO> historialDelMes(int mes, int ano) throws RepositorioException, IllegalArgumentException {
 		if (mes < 1 || mes > 12 || ano <= 0) {
 		    throw new IllegalArgumentException("Mes o año inválido.");
 		}
 		RepositorioProductoAdHoc repoAdHoc = FactoriaRepositorios.getRepositorio(RepositorioProductoAdHoc.class);
-		return repoAdHoc.findProductosByMonthAndYearOrderedByVisualizaciones(mes, ano);
-	}
+		
+		// 1. Obtenemos las entidades (Esto sigue igual)
+		List<Producto> productosEntidad = repoAdHoc.findProductosByMonthAndYearOrderedByVisualizaciones(mes, ano);
+		
+		// 2. CORRECCIÓN: Convertimos a DTOs (Resumen) para evitar LazyException y cumplir requisitos
+		List<ProductoDTO> resumenProductos = new ArrayList<>();
+		for (Producto p : productosEntidad) {
+			resumenProductos.add(transformToDTO(p));
+		}
+		
+		return resumenProductos;	
+}
 
 	@Override
 	public List<Producto> buscarProductos(String idCategoria, String textoDescripcion, EstadoProducto estadoMinimo, Double precioMax)

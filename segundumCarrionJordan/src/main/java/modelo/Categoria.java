@@ -29,6 +29,7 @@ public class Categoria implements Identificable{
 	
 	@Lob
 	private String descripcion;
+	@Lob
 	@XmlAttribute
 	private String ruta; 
 	
