@@ -228,11 +228,5 @@ public class ServicioProductos implements IServiciosProductos {
 		
 		// 5. Devolver la lista de DTOs
 		return productosDTO;
-		
-		/* // Forma alternativa usando Streams (más moderna, funcionalmente idéntica)
-		return productosDelVendedor.stream()
-								 .map(this::transformToDTO)
-								 .collect(Collectors.toList());
-		*/
 	}
 }

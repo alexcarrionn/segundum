@@ -31,6 +31,7 @@ public class CrearProductoBean implements Serializable {
     private String descripcionLugarRecogida; // Nuevo campo para la descripción del lugar de recogida
     private Double latitud;
     private Double longitud;
+    private boolean mostrarRecogida = false;
     // --- Listas para los desplegables ---
     private List<Categoria> categoriasDisponibles;
     private EstadoProducto[] estadosDisponibles;
@@ -91,19 +92,30 @@ public class CrearProductoBean implements Serializable {
                 titulo, descripcion, precio, estado, 
                 idCategoria, envioDisponible, idVendedor
             );
+            
+            // 3. Asignar Lugar de Recogida (si se ha rellenado)
+            if (descripcionLugarRecogida != null && !descripcionLugarRecogida.trim().isEmpty()) {
+                // Si lat/long son nulos, ponemos 0.0 para evitar errores
+                double lat = (latitud != null) ? latitud : 0.0;
+                double lon = (longitud != null) ? longitud : 0.0;
+                
+                servicioProductos.asignarLugarRecogida(idProductoCreado, descripcionLugarRecogida, lon, lat);
+            }
 
-            // 3. Preparar diálogo de éxito
+            // 4. Preparar diálogo de éxito
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Producto creado correctamente."));
             errorAlCrear = false;
             limpiarFormulario(); // Opcional: limpiar campos tras el éxito
 
         } catch (Exception e) {
-            // 4. Preparar diálogo de error
+            // 5. Preparar diálogo de error
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo crear el producto: " + e.getMessage()));
             errorAlCrear = true;
             e.printStackTrace();
         }
     }
+    
+    
 
     /**
      * Método llamado por el `p:remoteCommand` cuando el usuario hace click en el mapa.
@@ -131,6 +143,9 @@ public class CrearProductoBean implements Serializable {
         this.estado = null;
         this.idCategoria = null;
         this.envioDisponible = false;
+        this.descripcionLugarRecogida = null;
+        this.latitud = null;
+        this.longitud = null;
     }
 
     // --- Getters y Setters (Necesarios para que JSF conecte el bean con la vista) ---
@@ -197,4 +212,12 @@ public class CrearProductoBean implements Serializable {
     public void setLongitud(Double longitud) {
         this.longitud = longitud;
     }
+
+	public boolean isMostrarRecogida() {
+		return mostrarRecogida;
+	}
+
+	public void setMostrarRecogida(boolean mostrarRecogida) {
+		this.mostrarRecogida = mostrarRecogida;
+	}
 }

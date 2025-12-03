@@ -10,64 +10,71 @@
 
         <h:form id="formCrear">
             <p:panel header="Poner un producto a la venta">
-                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank"
-                    columnClasses="ui-g-12 ui-md-3, ui-g-12 ui-md-9">
+				<p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank"
+				                    columnClasses="ui-g-12 ui-md-3, ui-g-12 ui-md-9">
 
-                    <p:outputLabel for="titulo" value="Título:" />
-                    <p:inputText id="titulo" value="#{crearProductoBean.titulo}" required="true"
-                        requiredMessage="El título es obligatorio." style="width:100%" />
+				                    <p:outputLabel for="titulo" value="Título:" />
+				                    <p:inputText id="titulo" value="#{crearProductoBean.titulo}" required="true"
+				                        requiredMessage="El título es obligatorio." style="width:100%" />
 
-                    <p:outputLabel for="desc" value="Descripción:" />
-                    <p:inputTextarea id="desc" value="#{crearProductoBean.descripcion}" rows="6" style="width:100%" />
+				                    <p:outputLabel for="desc" value="Descripción:" />
+				                    <p:inputTextarea id="desc" value="#{crearProductoBean.descripcion}" rows="4" style="width:100%" />
 
-                    <p:outputLabel for="precio" value="Precio (€):" />
-                    <p:inputNumber id="precio" value="#{crearProductoBean.precio}" required="true"
-                        requiredMessage="El precio es obligatorio." minValue="0" decimalSeparator=","
-                        thousandSeparator="." />
+				                    <p:outputLabel for="precio" value="Precio (€):" />
+				                    <p:inputNumber id="precio" value="#{crearProductoBean.precio}" required="true"
+				                        requiredMessage="El precio es obligatorio." minValue="0" decimalSeparator=","
+				                        thousandSeparator="." />
 
-                    <p:outputLabel for="estado" value="Estado:" />
-                    <p:selectOneMenu id="estado" value="#{crearProductoBean.estado}" required="true"
-                        requiredMessage="Debes seleccionar un estado.">
-                        <f:selectItem itemLabel="Selecciona un estado..." itemValue="#{null}"
-                            noSelectionOption="true" />
-                        <f:selectItems value="#{crearProductoBean.estadosDisponibles}" var="e" itemLabel="#{e}"
-                            itemValue="#{e}" />
-                    </p:selectOneMenu>
+				                    <p:outputLabel for="estado" value="Estado:" />
+				                    <p:selectOneMenu id="estado" value="#{crearProductoBean.estado}" required="true"
+				                        requiredMessage="Debes seleccionar un estado.">
+				                        <f:selectItem itemLabel="Selecciona..." itemValue="#{null}" noSelectionOption="true" />
+				                        <f:selectItems value="#{crearProductoBean.estadosDisponibles}" var="e" itemLabel="#{e}" itemValue="#{e}" />
+				                    </p:selectOneMenu>
 
-                    <p:outputLabel for="categoria" value="Categoría:" />
-                    <p:selectOneMenu id="categoria" value="#{crearProductoBean.idCategoria}" required="true"
-                        requiredMessage="Debes seleccionar una categoría.">
-                        <f:selectItem itemLabel="Selecciona una categoría..." itemValue="#{null}"
-                            noSelectionOption="true" />
-                        <f:selectItems value="#{crearProductoBean.categoriasDisponibles}" var="c"
-                            itemLabel="#{c.nombre}" itemValue="#{c.id}" />
-                    </p:selectOneMenu>
+				                    <p:outputLabel for="categoria" value="Categoría:" />
+				                    <p:selectOneMenu id="categoria" value="#{crearProductoBean.idCategoria}" required="true"
+				                        requiredMessage="Debes seleccionar una categoría.">
+				                        <f:selectItem itemLabel="Selecciona..." itemValue="#{null}" noSelectionOption="true" />
+				                        <f:selectItems value="#{crearProductoBean.categoriasDisponibles}" var="c"
+				                            itemLabel="#{c.nombre}" itemValue="#{c.id}" />
+				                    </p:selectOneMenu>
 
-                    <p:outputLabel for="envio" value="Envío disponible:" />
-                    <p:selectBooleanCheckbox id="envio" value="#{crearProductoBean.envioDisponible}" />
+				                    <p:outputLabel for="envio" value="Envío disponible:" />
+				                    <p:selectBooleanCheckbox id="envio" value="#{crearProductoBean.envioDisponible}" />
 
+				                    <p:outputLabel value="Lugar de recogida:" />
+				                    <h:panelGroup>
+				                        <p:selectBooleanCheckbox value="#{crearProductoBean.mostrarRecogida}" itemLabel="Definir lugar de entrega en mano">
+				                            <p:ajax update="panelRecogida" />
+				                        </p:selectBooleanCheckbox>
+				                        
+				                        <h:panelGroup id="panelRecogida" layout="block" style="margin-top: 10px; border-left: 3px solid #ccc; padding-left: 10px;">
+				                            <h:panelGroup rendered="#{crearProductoBean.mostrarRecogida}">
+				                                
+				                                <div class="field">
+				                                    <p:outputLabel for="lugarDesc" value="Descripción del lugar:" style="display:block; margin-bottom: 5px;"/>
+				                                    <p:inputTextarea id="lugarDesc" value="#{crearProductoBean.descripcionLugarRecogida}" 
+				                                                     rows="2" style="width:100%" placeholder="Ej: Plaza Mayor, junto a la fuente..."/>
+				                                </div>
+				                                
+				                                <div class="formgrid grid">
+				                                    <div class="field col-6">
+				                                        <p:outputLabel for="lat" value="Latitud:" />
+				                                        <p:inputNumber id="lat" value="#{crearProductoBean.latitud}" decimalPlaces="6" />
+				                                    </div>
+				                                    <div class="field col-6">
+				                                        <p:outputLabel for="lon" value="Longitud:" />
+				                                        <p:inputNumber id="lon" value="#{crearProductoBean.longitud}" decimalPlaces="6" />
+				                                    </div>
+				                                </div>
+				                                <small style="color: grey;">(Coordenadas opcionales)</small>
+				                                
+				                            </h:panelGroup>
+				                        </h:panelGroup>
+				                    </h:panelGroup>
 
-                    <p:outputLabel for="lugarRecogida" value="Descripción del lugar de recogida:" />
-                    <p:inputTextarea id="lugarRecogida" value="#{crearProductoBean.descripcionLugarRecogida}" rows="2"
-                        style="width:100%;height: 50%;" />
-
-                    <p:outputLabel for="latitud" value="Latitud:" />
-                    <p:inputText id="latitud" value="#{crearProductoBean.latitud}" style="width:100%" />
-
-                    <p:outputLabel for="longitud" value="Longitud:" />
-                    <p:inputText id="longitud" value="#{crearProductoBean.longitud}" style="width:100%" />
-
-
-                    <script
-                        src="https://maps.google.com/maps/api/js?key=AIzaSyCvCDkYieuUBmMWon_mfLAfjuaeuosuqow&amp;sensor=true"></script>
-
-                    <div class="card">
-                        <p:gmap center="37.60197, -0.98397" zoom="15" type="HYBRID" style="width:700%;height:400px" />
-                    </div>
-
-
-
-                </p:panelGrid>
+				</p:panelGrid>
 
 
                 <p:toolbar>

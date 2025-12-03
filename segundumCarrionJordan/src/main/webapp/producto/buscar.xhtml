@@ -109,83 +109,120 @@
 
 		            </p:dataTable>
 
-					<p:dialog header="Ficha del Producto" widgetVar="dlgFicha" 
+					<p:dialog header="Detalle del Producto" widgetVar="dlgFicha" 
 					                      modal="true" 
 					                      showEffect="fade" hideEffect="fade" 
 					                      resizable="false" 
-					                      width="550" 
+					                      width="750" 
 					                      responsive="true"
-					                      blockScroll="true" 
-					                      contentStyle="max-height: 80vh; overflow: auto;"> 
-					                      <p:outputPanel id="dialogoDetallePanel">
-					                    
-					                    <p:card rendered="#{busquedaBean.productoDetalle != null}">
-					                        
-					                        <f:facet name="title">
-					                            #{busquedaBean.productoDetalle.titulo}
-					                        </f:facet>
-					                        
-					                        <f:facet name="subtitle">
-					                            <h:outputText value="#{busquedaBean.productoDetalle.precio}" style="font-size: 1.5rem; color: #20c997; font-weight: bold;">
-					                                <f:convertNumber type="currency" currencySymbol="€" locale="es_ES"/>
-					                            </h:outputText>
-					                        </f:facet>
+					                      blockScroll="true"
+					                      fitViewport="true"
+					                      style="max-height: 90vh;"> 
+					                
+										  <p:outputPanel id="dialogoDetallePanel" 
+										                                 style="max-height: 60vh; overflow-y: auto; overflow-x: hidden; display: block; padding: 0;">
 
-					                        <p>
-					                            <strong>Descripción:</strong><br/>
-					                            #{busquedaBean.productoDetalle.descripcion}
-					                        </p>
-					                        
-					                        <p:divider />
-					                        
-					                        <div class="grid">
-					                            <div class="col-6">
-					                                <strong><i class="pi pi-tag"></i> Categoría:</strong><br/>
-					                                #{busquedaBean.productoDetalle.nombreCategoria}
-					                            </div>
-					                            <div class="col-6">
-					                                <strong><i class="pi pi-info-circle"></i> Estado:</strong><br/>
-					                                #{busquedaBean.productoDetalle.estado}
-					                            </div>
-					                            <div class="col-6" style="margin-top: 10px;">
-					                                <strong><i class="pi pi-user"></i> Vendedor:</strong><br/>
-					                                #{busquedaBean.productoDetalle.nombreVendedor}
-					                            </div>
-					                            <div class="col-6" style="margin-top: 10px;">
-					                                <strong><i class="pi pi-calendar"></i> Publicado:</strong><br/>
-					                                <h:outputText value="#{busquedaBean.productoDetalle.fechaPublicacion}">
-					                                     <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy" />
-					                                </h:outputText>
-					                            </div>
-					                            <div class="col-6" style="margin-top: 10px;">
-					                                <strong><i class="pi pi-eye"></i> Vistas:</strong><br/>
-					                                #{busquedaBean.productoDetalle.visualizaciones}
-					                            </div>
-					                        </div>
+										                      <h:panelGroup rendered="#{busquedaBean.productoDetalle != null}">
 
-					                        <p:divider />
+										                          <div style="padding: 30px;">
+										                              
+										                              <div style="text-align: center; margin-bottom: 20px;">
+										                                  
+										                                  <h2 style="margin: 0; font-size: 2rem; color: #333; line-height: 1.2; margin-bottom: 10px;">
+										                                      #{busquedaBean.productoDetalle.titulo}
+										                                  </h2>
+										                                  
+										                                  <div style="margin-bottom: 15px;">
+										                                      <p:tag styleClass="mr-2" severity="info" value="#{busquedaBean.productoDetalle.nombreCategoria}" icon="pi pi-tag"/>
+										                                      <p:tag styleClass="mr-2" severity="warning" value="#{busquedaBean.productoDetalle.estado}" icon="pi pi-info-circle"/>
+										                                  </div>
 
-					                        <p>
-					                            <strong><i class="pi pi-truck"></i> Envío disponible: </strong>
-					                            <h:outputText value="SÍ" rendered="#{busquedaBean.productoDetalle.envioDisponible}" style="color:green; font-weight:bold"/>
-					                            <h:outputText value="NO" rendered="#{!busquedaBean.productoDetalle.envioDisponible}" style="color:red; font-weight:bold"/>
-					                        </p>
-					                        
-					                        <h:panelGroup rendered="#{busquedaBean.productoDetalle.lugarRecogida != null}">
-					                            <p>
-					                                <strong><i class="pi pi-map-marker"></i> Recogida en:</strong><br/>
-					                                #{busquedaBean.productoDetalle.lugarRecogida.descripcion}
-					                            </p>
-					                        </h:panelGroup>
+										                                  <div>
+										                                      <h:outputText value="#{busquedaBean.productoDetalle.precio}" style="font-size: 2.5rem; color: #20c997; font-weight: 800;">
+										                                          <f:convertNumber type="currency" currencySymbol="€" locale="es_ES"/>
+										                                      </h:outputText>
+										                                      <div style="font-size: 0.9rem; color: #888; margin-top: -5px;">Precio final</div>
+										                                  </div>
+										                              </div>
+										                              <p:divider />
 
-					                    </p:card>
-					                </p:outputPanel>
+										                              <h5 style="color: #555; margin-bottom: 10px; margin-top: 20px;">Descripción</h5>
+										                              <p style="color: #666; line-height: 1.6; margin-top: 0; font-size: 1.05rem;">
+										                                  #{busquedaBean.productoDetalle.descripcion}
+										                              </p>
+
+										                              <div class="grid" style="background-color: #f8f9fa; border-radius: 8px; padding: 15px; margin-top: 25px; border: 1px solid #e9ecef;">
+										                                  <div class="col-4" style="text-align: center; border-right: 1px solid #dee2e6;">
+										                                      <span style="display:block; color:#888; font-size: 0.85rem; margin-bottom: 5px;">Vendedor</span>
+										                                      <strong style="font-size: 1.1rem;">#{busquedaBean.productoDetalle.nombreVendedor}</strong>
+										                                  </div>
+										                                  <div class="col-4" style="text-align: center; border-right: 1px solid #dee2e6;">
+										                                      <span style="display:block; color:#888; font-size: 0.85rem; margin-bottom: 5px;">Publicado</span>
+										                                      <h:outputText value="#{busquedaBean.productoDetalle.fechaPublicacion}" style="font-weight: bold; font-size: 1.1rem;">
+										                                           <f:convertDateTime type="localDateTime" pattern="dd/MM/yyyy" />
+										                                      </h:outputText>
+										                                  </div>
+										                                  <div class="col-4" style="text-align: center;">
+										                                      <span style="display:block; color:#888; font-size: 0.85rem; margin-bottom: 5px;">Vistas</span>
+										                                      <strong style="font-size: 1.1rem;">#{busquedaBean.productoDetalle.visualizaciones}</strong>
+										                                  </div>
+										                              </div>
+
+										                              <div style="margin-top: 25px; border: 1px solid #cfe2ff; background-color: #f0f7ff; border-radius: 8px; padding: 20px;">
+										                                  <div style="display: flex; align-items: center; margin-bottom: 10px;">
+										                                      <i class="pi pi-truck" style="font-size: 1.4rem; color: #0d6efd; margin-right: 15px;"></i>
+										                                      <div>
+										                                          <span style="font-weight: bold; color: #444; font-size: 1.1rem;">Envío: </span>
+										                                          <h:outputText value="Disponible" rendered="#{busquedaBean.productoDetalle.envioDisponible}" style="color: #198754; font-weight: bold; font-size: 1.1rem; margin-left: 5px;"/>
+										                                          <h:outputText value="No disponible" rendered="#{!busquedaBean.productoDetalle.envioDisponible}" style="color: #dc3545; font-weight: bold; font-size: 1.1rem; margin-left: 5px;"/>
+										                                      </div>
+										                                  </div>
+
+																		  <h:panelGroup rendered="#{busquedaBean.productoDetalle.lugarRecogida != null}">
+																		                                      <div style="display: flex; align-items: flex-start; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #9ec5fe;">
+																		                                          <i class="pi pi-map-marker" style="font-size: 1.4rem; color: #d63384; margin-right: 15px; margin-top: 2px;"></i>
+																		                                          <div>
+																		                                              <span style="font-weight: bold; color: #444; display: block; font-size: 1.1rem; margin-bottom: 5px;">Recogida en mano:</span>
+																		                                              
+																		                                              <span style="color: #555; font-size: 1rem; display:block; margin-bottom: 5px;">
+																		                                                  #{busquedaBean.productoDetalle.lugarRecogida.descripcion}
+																		                                              </span>
+
+																		                                              <h:panelGroup rendered="#{busquedaBean.productoDetalle.lugarRecogida.latitud != 0.0}">
+																		                                                  <div style="font-size: 0.85rem; color: #777; background: #fff; padding: 5px 10px; border-radius: 4px; display: inline-block; border: 1px solid #dee2e6;">
+																		                                                      <i class="pi pi-compass" style="margin-right: 5px;"></i>
+																		                                                      
+																		                                                      <h:outputText value="#{busquedaBean.productoDetalle.lugarRecogida.latitud}">
+																		                                                          <f:convertNumber maxFractionDigits="5" />
+																		                                                      </h:outputText>, 
+																		                                                      <h:outputText value="#{busquedaBean.productoDetalle.lugarRecogida.longitud}">
+																		                                                          <f:convertNumber maxFractionDigits="5" />
+																		                                                      </h:outputText>
+
+																		                                                      <a href="https://www.google.com/maps/search/?api=1&amp;query=#{busquedaBean.productoDetalle.lugarRecogida.latitud},#{busquedaBean.productoDetalle.lugarRecogida.longitud}" 
+																		                                                         target="_blank" 
+																		                                                         style="margin-left: 10px; color: #0d6efd; text-decoration: none; font-weight: bold;">
+																		                                                         Ver en mapa <i class="pi pi-external-link" style="font-size: 0.7rem;"></i>
+																		                                                      </a>
+																		                                                  </div>
+																		                                              </h:panelGroup>
+
+																		                                          </div>
+																		                                      </div>
+																		                                  </h:panelGroup>
+										                              </div>
+
+										                          </div>
+										                      </h:panelGroup>
+										                  </p:outputPanel>-
 
 					                <f:facet name="footer">
-					                    <p:commandButton value="Cerrar" icon="pi pi-times" onclick="PF('dlgFicha').hide()"
-					                                     class="ui-button-secondary ui-button-flat" />
+					                    <div style="padding: 10px;">
+					                        <p:commandButton value="Cerrar Ficha" icon="pi pi-times" onclick="PF('dlgFicha').hide()"
+					                                         styleClass="ui-button-secondary ui-button-outlined" style="width: 100%"/>
+					                    </div>
 					                </f:facet>
-					  </p:dialog>
+					            </p:dialog>
 
 		        </h:form>
 		        </div>
