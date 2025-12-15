@@ -7,16 +7,8 @@ import dto.ProductoDTO;
 import modelo.Categoria;
 import modelo.EstadoProducto; 
 import modelo.Producto; 
-//import modelo.Usuario; 
-//import repositorio.EntidadNoEncontrada;
 import repositorio.FactoriaRepositorios;
-//import repositorio.Repositorio; 
-//import repositorio.RepositorioException;
 import repositoriosAdHoc.*;
-//import repositoriosModelo.IRepositorioCategorias; 
-//import repositoriosModelo.IRepositorioProducto;
-//import repositoriosModelo.IRepositorioUsuario; 
-
 import servicio.FactoriaServicios;
 import servicio.IServicioUsuario;
 import servicio.IServiciosCategorias;

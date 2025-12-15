@@ -37,11 +37,9 @@ public class BusquedaBean implements Serializable {
     private EstadoProducto filtroEstado;
 
     private ProductoDTO productoDetalle;
-    //private FacesContext facesContext;
 
     @PostConstruct
     public void init() {
-        //facesContext = FacesContext.getCurrentInstance();
         repoProducto = FactoriaRepositorios.getRepositorio(Producto.class);
         servicioProducto = FactoriaServicios.getServicio(IServiciosProductos.class);
         cargarTodos();
@@ -52,9 +50,6 @@ public class BusquedaBean implements Serializable {
             productos = repoProducto.getAll();
         } catch (RepositorioException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Error cargando productos: " + e.getMessage()));
-            //if (facesContext != null) {
-            //    facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Error cargando productos: " + e.getMessage()));
-            //}
         }
     }
 

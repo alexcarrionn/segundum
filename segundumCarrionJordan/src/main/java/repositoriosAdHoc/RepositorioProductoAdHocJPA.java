@@ -40,13 +40,8 @@ public class RepositorioProductoAdHocJPA extends RepositorioProductosJPA impleme
 			Map<String, Object> parameters = new HashMap<>();
 
 			if (idsCategorias != null && !idsCategorias.isEmpty()) {
-				//List<String> idsCategorias = obtenerIdsCategoriasDescendientes(idCategoriaRaiz);
-				//if (idsCategorias != null && !idsCategorias.isEmpty()) {
-					jpql.append(" AND p.categoria.id IN :listaIdsCategorias");
-					parameters.put("listaIdsCategorias", idsCategorias);
-				//} else {
-				  //  return new ArrayList<>();
-				//}
+				jpql.append(" AND p.categoria.id IN :listaIdsCategorias");
+				parameters.put("listaIdsCategorias", idsCategorias);
 			}
 
 			if (textoDescripcion != null && !textoDescripcion.trim().isEmpty()) {
@@ -75,9 +70,7 @@ public class RepositorioProductoAdHocJPA extends RepositorioProductosJPA impleme
 			}
 
 			return query.getResultList();
-
-		//} catch (RepositorioException re) {
-		  //  throw re; // Relanzar
+		
 		} catch (Exception e) {
 			throw new RepositorioException("Error al buscar productos por criterios", e);
 		} finally {
@@ -137,50 +130,7 @@ public class RepositorioProductoAdHocJPA extends RepositorioProductosJPA impleme
 		}
 	}
 	// --- MÉTODOS AUXILIARES ---
-	
-	/**
-	 * Obtiene los IDs de una categoría y todas sus descendientes.
-	 * Llama al servicio de Categorías.
-	 */
-	/** NO USADO PARA CERRAR BIEN EL ENTITY MANAGER
-	private List<String> obtenerIdsCategoriasDescendientes(String idCategoriaRaiz)
-	        throws RepositorioException, EntidadNoEncontrada {
 
-	    List<String> ids = new ArrayList<>();
-	    IServiciosCategorias servicioCategorias = null;
-        IRepositorioCategorias repoCat = null;
-
-	    try {
-	        servicioCategorias = FactoriaServicios.getServicio(IServiciosCategorias.class);
-            repoCat = FactoriaRepositorios.getRepositorio(Categoria.class);
-
-            Categoria catRaiz = repoCat.getById(idCategoriaRaiz);
-            ids.add(catRaiz.getId());
-
-	        List<Categoria> descendientes = servicioCategorias.recuperarTodosDescendientes(idCategoriaRaiz);
-
-	        if (descendientes != null) {
-	            for (Categoria cat : descendientes) {
-                    if (!ids.contains(cat.getId())) {
-	                    ids.add(cat.getId());
-                    }
-	            }
-	        }
-
-	    } catch (EntidadNoEncontrada | RepositorioException e) {
-	        throw e;
-	    } catch (RuntimeException e) {
-	        throw new RepositorioException("Error al obtener servicio/repositorio de categorías", e);
-	    } catch (Exception e) {
-	        throw new RepositorioException("Error inesperado al obtener IDs de categorías descendientes", e);
-	    }
-
-        if (ids.isEmpty()) {
-             throw new EntidadNoEncontrada("No se pudo obtener información para la categoría raíz ID: " + idCategoriaRaiz);
-        }
-	    return ids;
-	}
-	*/
 	/**
 	 * Devuelve una lista de Estados de Producto iguales o mejores que el estado dado.
 	 */

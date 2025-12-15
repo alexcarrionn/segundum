@@ -11,7 +11,7 @@ import servicio.IServicioUsuario;
 import modelo.Usuario;
 @SuppressWarnings("serial")
 @Named
-//con @RequestScoped lo que se have es que cada vez que se recarga la pagina se crea un nuevo bean
+//con @RequestScoped lo que se hace es que cada vez que se recarga la pagina se crea un nuevo bean
 @RequestScoped
 public class LoginBean implements Serializable{
 

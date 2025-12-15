@@ -126,7 +126,7 @@ Otra forma de acceder a esta pantalla es seleccionando **Ver Mis Productos** en 
 
 <image src="imagenes/lapiz.png">
 
-- En la pantalla de edición, podrás modificar *Precio* y/o *Descripción* del producto:
+- En la pantalla de edición, podrás modificar *Precio* y/o *Descripción* del producto:  
 <image src="imagenes/editar_producto.png" style="width:80%; margin-bottom:25px;">
 
 - Tras realizar cambios, pulsa **Guardar Cambios**.
