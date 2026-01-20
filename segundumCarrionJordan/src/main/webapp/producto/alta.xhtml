@@ -34,7 +34,7 @@
 
 				                    <p:outputLabel for="categoria" value="Categoría:" />
 				                    <p:selectOneMenu id="categoria" value="#{crearProductoBean.idCategoria}" required="true"
-				                        requiredMessage="Debes seleccionar una categoría.">
+				                        requiredMessage="Debes seleccionar una categoría."  filter="true" filterMatchMode="contains">
 				                        <f:selectItem itemLabel="Selecciona..." itemValue="#{null}" noSelectionOption="true" />
 				                        <f:selectItems value="#{crearProductoBean.categoriasDisponibles}" var="c"
 				                            itemLabel="#{c.nombre}" itemValue="#{c.id}" />
