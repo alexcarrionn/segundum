@@ -105,7 +105,7 @@ public class EditarProductoBean implements Serializable {
     private void redirectLogin() {
         try {
             facesContext.getExternalContext().redirect(
-                facesContext.getExternalContext().getRequestContextPath() + "/login.xhtml?faces-redirect=true"
+                facesContext.getExternalContext().getRequestContextPath() + "/usuario/login.xhtml?faces-redirect=true"
             );
         } catch (Exception e) { e.printStackTrace(); }
     }
@@ -114,7 +114,7 @@ public class EditarProductoBean implements Serializable {
         try {
             // Asumiendo que está en /producto/mis-productos.xhtml
             facesContext.getExternalContext().redirect(
-                facesContext.getExternalContext().getRequestContextPath() + "/producto/mis-productos.xhtml?faces-redirect=true"
+                facesContext.getExternalContext().getRequestContextPath() + "/usuario/mis-productos.xhtml?faces-redirect=true"
             );
         } catch (Exception e) { e.printStackTrace(); }
     }

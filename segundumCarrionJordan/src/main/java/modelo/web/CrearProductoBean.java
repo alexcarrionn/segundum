@@ -64,7 +64,7 @@ public class CrearProductoBean implements Serializable {
             try {
                 // Si no está logueado, lo mandamos al login
                 facesContext.getExternalContext().redirect(
-                    facesContext.getExternalContext().getRequestContextPath() + "/login.xhtml?faces-redirect=true"
+                    facesContext.getExternalContext().getRequestContextPath() + "/usuario/login.xhtml?faces-redirect=true"
                 );
             } catch (Exception e) {
                 e.printStackTrace();
