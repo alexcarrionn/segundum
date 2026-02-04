@@ -19,6 +19,7 @@ import repositoriosModelo.IRepositorioProducto;
 import servicio.FactoriaServicios;
 import servicio.IServiciosProductos;
 import dto.ProductoDTO;
+import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 @Named("busquedaBean")
@@ -26,8 +27,8 @@ import dto.ProductoDTO;
 public class BusquedaBean implements Serializable {
 
 
-    private List<Producto> productos;
-    private Producto seleccionado;
+    private List<ProductoDTO> productos;
+    private ProductoDTO seleccionado;
     private IServiciosProductos servicioProducto;
     private IRepositorioProducto repoProducto;
 
@@ -47,7 +48,18 @@ public class BusquedaBean implements Serializable {
 
     public void cargarTodos() {
         try {
-            productos = repoProducto.getAll();
+            List<Producto> entidades = repoProducto.getAll();
+            productos = new ArrayList<>();
+            for (Producto p : entidades) {
+                // servicioProducto.getProductoDTO ya devuelve el objeto transformado
+                try {
+					this.productos.add(servicioProducto.getProductoDTO(p.getId()));
+				} catch (EntidadNoEncontrada e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+
         } catch (RepositorioException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "", "Error cargando productos: " + e.getMessage()));
         }
@@ -79,7 +91,7 @@ public class BusquedaBean implements Serializable {
         }
     }
 
-    public void onRowSelect(SelectEvent<Producto> event) {
+    public void onRowSelect(SelectEvent<ProductoDTO> event) {
         this.seleccionado = event.getObject();
     }
     
@@ -96,10 +108,10 @@ public class BusquedaBean implements Serializable {
         }
     }
 
-    public List<Producto> getProductos() { return productos; }
-    public void setProductos(List<Producto> productos) { this.productos = productos; }
-    public Producto getSeleccionado() { return seleccionado; }
-    public void setSeleccionado(Producto seleccionado) { this.seleccionado = seleccionado; }
+    public List<ProductoDTO> getProductos() { return productos; }
+    public void setProductos(List<ProductoDTO> productos) { this.productos = productos; }
+    public ProductoDTO getSeleccionado() { return seleccionado; }
+    public void setSeleccionado(ProductoDTO seleccionado) { this.seleccionado = seleccionado; }
 
     public String getFiltroDescripcion() { return filtroDescripcion; }
     public void setFiltroDescripcion(String filtroDescripcion) { this.filtroDescripcion = filtroDescripcion; }

@@ -149,19 +149,24 @@ public class Programa {
 						historial.forEach(p -> System.out.println("    - " + p.getTitulo() + " (ID: "+ p.getId() + ", Vis: " + p.getVisualizaciones() + ")"));
 
 						// --- Prueba Historia 7: Buscar Productos ---
+						// --- Prueba Historia 7: Buscar Productos ---
 						System.out.println("\n[Prueba H7] Buscar Productos...");
 						System.out.println("   Buscando 'pincel'...");
-						List<Producto> encontrados1 = servicioProductos.buscarProductos(null, "pincel", null, null);
+
+						// CORRECCIÓN: Cambiar tipo de List<Producto> a List<ProductoDTO>
+						List<ProductoDTO> encontrados1 = servicioProductos.buscarProductos(null, "pincel", null, null);
 						System.out.println("   --> Encontrados por 'pincel': " + encontrados1.size());
 						encontrados1.forEach(p -> System.out.println("       - " + p.getTitulo() + " (ID: "+p.getId()+")"));
 
 						System.out.println("\n   Buscando en categoría '" + idCategoria + "' (y desc.) <= 20 EUR...");
-						List<Producto> encontrados2 = servicioProductos.buscarProductos(idCategoria, null, null, 20.0);
+						// CORRECCIÓN: Cambiar tipo de List<Producto> a List<ProductoDTO>
+						List<ProductoDTO> encontrados2 = servicioProductos.buscarProductos(idCategoria, null, null, 20.0);
 						System.out.println("   --> Encontrados por categoría '" + idCategoria + "' y precio: " + encontrados2.size());
 						encontrados2.forEach(p -> System.out.println("       - " + p.getTitulo() + " (ID: "+p.getId()+", €" + p.getPrecio() + ")"));
 
 						System.out.println("\n   Buscando con estado mínimo COMO_NUEVO...");
-						List<Producto> encontrados3 = servicioProductos.buscarProductos(null, null, EstadoProducto.COMO_NUEVO, null);
+						// CORRECCIÓN: Cambiar tipo de List<Producto> a List<ProductoDTO>
+						List<ProductoDTO> encontrados3 = servicioProductos.buscarProductos(null, null, EstadoProducto.COMO_NUEVO, null);
 						System.out.println("   --> Encontrados por estado >= COMO_NUEVO: " + encontrados3.size());
 						encontrados3.forEach(p -> System.out.println("       - " + p.getTitulo() + " (ID: "+p.getId()+", Estado: " + p.getEstado() + ")"));
 

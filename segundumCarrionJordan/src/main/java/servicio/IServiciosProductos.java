@@ -35,7 +35,7 @@ public interface IServiciosProductos {
 	List<ProductoDTO> historialDelMes(int mes, int ano) throws RepositorioException;
 
 	// Busca productos a la venta según criterios opcionales. (Historia 7)
-	List<Producto> buscarProductos(String idCategoria, String textoDescripcion, EstadoProducto estadoMinimo, Double precioMax)
+	List<ProductoDTO> buscarProductos(String idCategoria, String textoDescripcion, EstadoProducto estadoMinimo, Double precioMax)
 	                    throws RepositorioException, EntidadNoEncontrada;
 
 	ProductoDTO getProductoDTO(String idProducto) throws EntidadNoEncontrada, RepositorioException; 

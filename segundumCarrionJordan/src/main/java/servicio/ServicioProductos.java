@@ -127,7 +127,7 @@ public class ServicioProductos implements IServiciosProductos {
 }
 
 	@Override
-	public List<Producto> buscarProductos(String idCategoria, String textoDescripcion, EstadoProducto estadoMinimo, Double precioMax)
+	public List<ProductoDTO> buscarProductos(String idCategoria, String textoDescripcion, EstadoProducto estadoMinimo, Double precioMax)
 	                    throws RepositorioException, EntidadNoEncontrada { 
 
 		List<String> idsCategoriasParaBuscar = null;
@@ -165,7 +165,15 @@ public class ServicioProductos implements IServiciosProductos {
 		}
 
 		RepositorioProductoAdHoc repoAdHoc = FactoriaRepositorios.getRepositorio(RepositorioProductoAdHoc.class);
-		return repoAdHoc.findProductosByCriteria(idsCategoriasParaBuscar, textoDescripcion, estadoMinimo, precioMax); // Lanza checked RepositorioException
+		List<Producto> entidades = repoAdHoc.findProductosByCriteria(idsCategoriasParaBuscar, textoDescripcion, estadoMinimo, precioMax); // Lanza checked RepositorioException	
+		// Convertir entidades a DTOs
+		List<ProductoDTO> productosDTO = new ArrayList<>();
+		for (Producto p : entidades) {
+			productosDTO.add(transformToDTO(p));
+		}
+
+		return productosDTO;
+	
 	}
 
 	//Creamos una nueva funcion que nos permitira conseguir un ProductoDTO 
